@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+build
+pnpm-lock.yaml
+design-source
+.claude
+
+# Markdown — prosa propia, no la queremos auto-formateada
+*.md
