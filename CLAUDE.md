@@ -21,8 +21,8 @@ Ver `talenthub-contexto-proyecto.md` (en la raíz del repo o en `/docs/`) para e
 ## 2. 📍 Estado actual
 
 ```
-Fase actual: 1 — Fundamentos del proyecto
-Próximo paso: Inicializar Next.js + Tailwind + shadcn según docs/design-system.md
+Fase actual: 2 — Maquetación estática (10 pantallas)
+Próximo paso: Definir tipos TypeScript en src/lib/types/ + capa de datos abstracta en src/lib/data/ + mock data en src/mocks/ (antes de tocar pantallas)
 Bloqueadores: Ninguno
 ```
 
@@ -30,7 +30,7 @@ Bloqueadores: Ninguno
 
 **Historial de fases:**
 - [x] Fase 0 — Diagnóstico del diseño (cerrada 2026-05-01)
-- [ ] Fase 1 — Fundamentos del proyecto
+- [x] Fase 1 — Fundamentos del proyecto (cerrada 2026-05-02)
 - [ ] Fase 2 — Maquetación estática (10 pantallas)
 - [ ] Fase 3 — Backend, datos, auth
 - [ ] Fase 4 — Capa de IA
@@ -39,6 +39,19 @@ Bloqueadores: Ninguno
 ---
 
 ## 3. 🤝 Cómo trabajar con Claude Code en este proyecto
+
+### 📂 Archivos de contexto
+
+Hay cuatro tipos de archivo que cualquier agente debe conocer. **Lee en este orden** al iniciar una sesión:
+
+1. **`CLAUDE.md`** (este archivo) — visión del proyecto, fase actual, decisiones tomadas, convenciones, riesgos. Fuente de verdad para el "qué" y el "por qué".
+2. **`AGENTS.md`** — reglas operacionales urgentes del stack actual (breaking changes que pueden no estar en tu training data: Next 16 async APIs, Turbopack default, `next lint` removido, etc.). **Léelo antes de escribir código.**
+3. **`talenthub-contexto-proyecto.md`** — brief de producto: usuarios, flujos, mercado, modelo de negocio. (En la raíz o en `/docs/`.)
+4. **`docs/design-audit.md`** y **`docs/design-system.md`** — referencia visual: inventario de pantallas, tokens canónicos, patrones. Indispensable desde Fase 2.
+
+Si añades un archivo de contexto nuevo (ej. `docs/data-model.md` en Fase 3, `docs/decisions.md` para ADRs), regístralo aquí.
+
+---
 
 **Reglas de oro:**
 
@@ -54,11 +67,12 @@ Bloqueadores: Ninguno
 
 ```
 1. Leer CLAUDE.md → identificar fase actual y próximo paso.
-2. Leer talenthub-contexto-proyecto.md si necesitas contexto de producto.
-3. Si es Fase 0, leer también el output de Claude Design.
-4. Si es Fase ≥1, leer docs/design-audit.md y docs/design-system.md.
-5. Confirmar con David qué tarea específica de la fase trabajar hoy.
-6. Trabajar. Commitear. Actualizar checklist al cierre.
+2. Leer AGENTS.md → reglas operacionales del stack (no skip — versiones recientes pueden no estar en tu training).
+3. Leer talenthub-contexto-proyecto.md si necesitas contexto de producto.
+4. Si es Fase 0, leer también el output de Claude Design.
+5. Si es Fase ≥1, leer docs/design-audit.md y docs/design-system.md.
+6. Confirmar con David qué tarea específica de la fase trabajar hoy.
+7. Trabajar. Commitear. Actualizar checklist al cierre.
 ```
 
 ---
@@ -69,10 +83,10 @@ Bloqueadores: Ninguno
 
 | Capa | Tecnología | Razón |
 |---|---|---|
-| Framework | **Next.js (App Router)** | Requisito del autor. SSR/RSC, ecosistema maduro. |
+| Framework | **Next.js 16 (App Router)** | Requisito del autor. SSR/RSC, ecosistema maduro. **Ver `AGENTS.md` para reglas operacionales críticas del stack actual.** |
 | Lenguaje | TypeScript (strict) | Seguridad de tipos en marketplace con muchos modelos de datos. |
-| Estilos | Tailwind CSS | Match con la inspiración Linear/Arc/Are.na. Velocidad. |
-| Componentes UI | shadcn/ui | Componentes accesibles, ownership del código, fácil de tematizar. |
+| Estilos | **Tailwind CSS v4** | Config CSS-first (`@theme inline` en `globals.css`). Match con la inspiración Linear/Arc/Are.na. |
+| Componentes UI | shadcn/ui (style `base-nova`) | Basado en `@base-ui/react` (no Radix). Accesible, ownership del código, fácil de tematizar. |
 | Iconos | lucide-react | Default de shadcn, consistente. |
 | Fuentes | Inter + Inter Tight (vía `next/font`) | Definidas en el brief de identidad visual. |
 | Package manager | pnpm | Más rápido, mejor con monorepos si crecemos. |
@@ -91,6 +105,15 @@ Bloqueadores: Ninguno
 | Pagos | Wompi, PayU, Mercado Pago | Post-V1 | No prioritario. |
 | Analytics | Plausible, Posthog, Vercel Analytics | Fase 5 | |
 | Error tracking | Sentry | Fase 5 | |
+
+### Particularidades del stack
+
+> Las advertencias operacionales detalladas viven en `AGENTS.md`. Aquí solo lo arquitectónico.
+
+- **Tailwind v4 sin `tailwind.config.ts`.** No existe ese archivo. Todos los tokens (colores, fuentes, breakpoints, radii, shadows, animations) viven en `src/app/globals.css` dentro de bloques `@theme inline { ... }` y `:root { ... }`. Si te dicen "ajusta el tailwind config", traduce a "edita `globals.css`".
+- **shadcn `base-nova` ≠ shadcn legacy.** Las primitivas usan `@base-ui/react` (Vercel) en lugar de `@radix-ui/react-*`. APIs ligeramente distintas (ej. `ToggleGroup` no acepta `type="multiple"` — usa `value` array). Nombres de archivos en `src/components/ui/` son los mismos.
+- **No existe componente `Form` en `base-nova`.** El primer formulario de Fase 2 establece el patrón con `react-hook-form` + `zod` + `Input`/`Label`/`Textarea` directos. Ver §6 "Patrón de formularios".
+- **Toast → `sonner`.** El `toast` legacy de shadcn está deprecado. `sonner` se importa desde el package homónimo; `<Toaster />` se monta una vez en el árbol (ya está en `/sandbox`).
 
 ---
 
@@ -199,6 +222,44 @@ talenthub/
 - WCAG AA mínimo desde Fase 1.
 - Labels en todos los inputs, alt en todas las imágenes, foco visible.
 - Componentes shadcn ya vienen accesibles — no los rompas.
+
+### Patrón de formularios
+
+> El primer formulario de Fase 2 establece el patrón canónico. **Sugerencia: empieza por "Crear casting" (`/agency/castings/new`)** porque tiene un mix representativo (texto requerido, textarea con counter, file upload, sección colapsable, requisitos numéricos, selectors).
+
+**Stack:**
+- **`react-hook-form`** para estado del form (no `useState` por campo).
+- **`zod`** para schema de validación. El schema vive en `src/lib/schemas/<entidad>.ts` y exporta el tipo inferido (`type CastingForm = z.infer<typeof castingSchema>`) que se reusa en `src/lib/types/`.
+- **shadcn primitivas directas:** `<Input>`, `<Label>`, `<Textarea>`, `<Select>`, `<ToggleGroup>` (no hay wrapper `<Form>` en `base-nova`).
+- **Modo de validación:** `onBlur` por defecto en todos los formularios. Esto valida cuando el usuario sale del campo, no en cada keystroke (ruidoso) ni solo al submit (frustrante).
+- **Errores inline** debajo del input con `text-xs text-danger mt-1`. Sin tooltips, sin modales de error.
+- **Hook custom** (`use-<entidad>-form.ts`) si la lógica se repite en >1 pantalla. Si solo se usa en una, déjalo inline.
+
+**Estructura visual canónica:**
+
+```tsx
+const { register, handleSubmit, formState: { errors, isValid } } = useForm<CastingForm>({
+  resolver: zodResolver(castingSchema),
+  mode: "onBlur",
+  defaultValues: { /* ... */ }
+});
+
+return (
+  <form onSubmit={handleSubmit(onSubmit)}>
+    <div>
+      <Label htmlFor="title">Título *</Label>
+      <Input id="title" {...register("title")} />
+      {errors.title && (
+        <p className="text-danger text-xs mt-1">{errors.title.message}</p>
+      )}
+    </div>
+    ...
+    <Button type="submit" disabled={!isValid}>Publicar</Button>
+  </form>
+);
+```
+
+**Si encuentras razón para divergir** del patrón en una pantalla específica (ej. usar `useState` plain en un filtro trivial de 1 campo), regístralo en §9 con la razón, antes de hacerlo.
 
 ---
 
@@ -473,6 +534,12 @@ Tomar decisión, documentar razones, **luego** ejecutar.
 - **2026-05-01** — Iconos: lucide-react para genéricos + custom en `src/components/icons/` con API compatible con lucide. — Mantiene fidelidad de marca (Sparkle animado, PdfIcon, ReqIcon) sin sacrificar ergonomía del set lucide.
 - **2026-05-01** — JetBrains Mono descartada. — Apareció en una sola pantalla (`Mis Castings.html` línea 434) para contadores numéricos; Inter + `tabular-nums` cubre el caso sin payload extra de fuente.
 - **2026-05-01** — State patterns (empty/loading/error/success) derivados del `EmptyState` del diseño como variantes de un solo `<StateCard>`. — Coherencia visual + un solo componente que mantener.
+- **2026-05-02** — Next.js 16 (App Router). — Tomamos lo que `create-next-app@latest` instaló al inicializar (16.2.4) y lo aceptamos con sus breaking changes documentados en `AGENTS.md`. Mantenemos la versión pineada en `package.json`; cualquier upgrade mayor (Next 17, etc.) será una decisión explícita registrada aquí, no automática.
+- **2026-05-02** — Tailwind CSS v4 con config CSS-first en `globals.css`. — Default actual de `create-next-app@latest`. No hay `tailwind.config.ts`; tokens viven en `@theme inline`.
+- **2026-05-02** — shadcn 4.6 con style `base-nova` (basado en `@base-ui/react`). — Default actual del init de shadcn. Implica APIs ligeramente distintas a la versión Radix legacy y la ausencia del componente `Form` (cubierto por el patrón de §6).
+- **2026-05-02** — `sonner` reemplaza al antiguo `toast` legacy de shadcn. — Recomendación oficial de shadcn; API más limpia y package más liviano.
+- **2026-05-02** — `AGENTS.md` como complemento operacional de `CLAUDE.md`. — Aloja reglas urgentes del stack que pueden no estar en el training de un agente; `CLAUDE.md` aloja la visión y las decisiones. Cada agente debe leer ambos al iniciar (workflow §3).
+- **2026-05-02** — Patrón canónico de formularios: `react-hook-form` + `zod` + primitivas shadcn directas, modo de validación `onBlur`. — Establecido en §6. El primer form de Fase 2 ("Crear casting") materializa el patrón.
 
 ---
 
