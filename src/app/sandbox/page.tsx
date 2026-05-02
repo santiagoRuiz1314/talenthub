@@ -381,7 +381,7 @@ export default function SandboxPage() {
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label>Categorías de interés</Label>
-              <ToggleGroup type="multiple" variant="outline">
+              <ToggleGroup variant="outline">
                 <ToggleGroupItem value="tv">TV/comerciales</ToggleGroupItem>
                 <ToggleGroupItem value="foto">Fotografía</ToggleGroupItem>
                 <ToggleGroupItem value="pasarela">Pasarela</ToggleGroupItem>
