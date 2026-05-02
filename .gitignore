@@ -1,0 +1,5 @@
+# Bundle local de Claude Design — contexto para el agente, no código de producción
+design-source/
+
+# macOS
+.DS_Store
