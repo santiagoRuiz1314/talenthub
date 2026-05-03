@@ -3,7 +3,7 @@
 > Tokens definitivos consolidados a partir del output de Claude Design (ver `docs/design-audit.md`).
 > En caso de conflicto con el brief original (§7 de CLAUDE.md), **gana el diseño**.
 >
-> Esta es la fuente de verdad para `tailwind.config.ts` y `src/app/globals.css` desde Fase 1.
+> Esta es la fuente de verdad para `src/app/globals.css` desde Fase 1.
 
 ---
 
@@ -66,7 +66,7 @@ A definir en `src/app/globals.css` dentro de `:root`:
 
 > **Coral period.** Reservado para remate de h1 importantes — un punto coral al final del titular ("Aplica en segundos<span style='color: var(--coral)'>.</span>"). No abusar.
 
-### 2.2 Mapeo a Tailwind (en `tailwind.config.ts`)
+### 2.2 Mapeo a Tailwind (en `globals.css`)
 
 ```ts
 theme: {
@@ -232,7 +232,7 @@ Tailwind default basta. Lo más usado:
 
 ### 4.3 Breakpoints
 
-Custom screens en `tailwind.config.ts` (alinearlos a los breakpoints del diseño, no a defaults Tailwind):
+Custom screens en `globals.css` (alinearlos a los breakpoints del diseño, no a defaults Tailwind):
 
 ```ts
 screens: {
@@ -457,7 +457,7 @@ Heredado del brief (WCAG AA) + lo observado:
    - `:root` con todos los tokens de §2.1 + §2.3 (alias shadcn).
    - Selección coral.
    - Los 6 keyframes de §7.2.
-2. `tailwind.config.ts`:
+2. `globals.css` (vía `@theme inline`):
    - `theme.extend.colors` mapeando vars (§2.2).
    - `theme.extend.screens` con breakpoints custom (§4.3).
    - `theme.extend.borderRadius` con escala (§5).

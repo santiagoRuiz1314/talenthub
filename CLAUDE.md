@@ -184,7 +184,6 @@ talenthub/
 │   └── styles/
 ├── components.json                    # Config shadcn
 ├── next.config.ts
-├── tailwind.config.ts
 ├── tsconfig.json
 ├── .env.local.example
 ├── .eslintrc.json
