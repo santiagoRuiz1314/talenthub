@@ -1,4 +1,5 @@
 import type {
+  AgeRange,
   City,
   Gender,
   ISODateString,
@@ -103,3 +104,12 @@ export type TalentInput = Omit<
 export type TalentUpdate = Partial<TalentInput>;
 
 export type PortfolioInput = Omit<Portfolio, "id" | "uploadedAt">;
+
+/** Filtros que consume `searchTalents(filters?)` en `lib/data/talents.ts`. */
+export type TalentFilters = {
+  city?: City;
+  gender?: Gender;
+  ageRange?: AgeRange;
+  /** Búsqueda full-text por nombre completo (firstName + lastName). */
+  search?: string;
+};
