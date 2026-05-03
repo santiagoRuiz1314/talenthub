@@ -1,3 +1,4 @@
+import type { Agency } from "./agency";
 import type {
   AgeRange,
   City,
@@ -75,3 +76,12 @@ export type CastingInput = Omit<
 };
 
 export type CastingUpdate = Partial<CastingInput>;
+
+/**
+ * Casting hidratado con un subset público de la agencia.
+ * Lo consumen las pantallas de cara a talento (feed, detalle) que muestran
+ * `agency.name`, `agency.logoUrl` y el badge de verificación.
+ */
+export type CastingWithAgency = Casting & {
+  agency: Pick<Agency, "id" | "name" | "logoUrl" | "verificationStatus">;
+};

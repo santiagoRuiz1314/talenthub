@@ -9,12 +9,14 @@ import { simulateLatency } from "./_latency";
  * Mock del usuario actualmente autenticado.
  * Configurable cambiando `mockCurrentUserId` en `src/mocks/users.ts`.
  * Devuelve `null` si no hay user configurado o el id no matchea.
+ * Spread shallow defensivo: mutar el objeto retornado no toca el mock.
  * En Fase 3 esto se reemplaza por la sesión real (Clerk/Supabase).
  */
 export async function getCurrentUser(): Promise<User | null> {
   await simulateLatency();
   if (!mockCurrentUserId) return null;
-  return mockUsers.find((u) => u.id === mockCurrentUserId) ?? null;
+  const found = mockUsers.find((u) => u.id === mockCurrentUserId);
+  return found ? { ...found } : null;
 }
 
 /**

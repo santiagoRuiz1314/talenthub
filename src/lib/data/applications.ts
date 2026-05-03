@@ -48,6 +48,11 @@ export async function getApplicationsByCasting(
  * Crea una aplicación. Valida `input` con `applicationInputSchema`.
  * Status inicial = `"pending"`. Lanza si ya existe una aplicación del mismo
  * talento al mismo casting.
+ *
+ * @fase2 Esta función persiste en el array de mocks.
+ * El CTA "Aplicar" de Fase 2 NO debe llamarla directamente —
+ * ese flujo es toast-only (ver AGENTS.md).
+ * Usarla solo para simular creación real en tests/dev tools.
  */
 export async function createApplication(
   input: ApplicationInput,

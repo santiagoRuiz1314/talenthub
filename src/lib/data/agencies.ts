@@ -4,10 +4,14 @@ import { mockAgencies } from "@/mocks/agencies";
 
 import { simulateLatency } from "./_latency";
 
-/** Agency por id, o `null` si no existe. */
+/**
+ * Agency por id, o `null` si no existe.
+ * Spread shallow defensivo: mutar el objeto retornado no toca el mock.
+ */
 export async function getAgency(id: UUID): Promise<Agency | null> {
   await simulateLatency();
-  return mockAgencies.find((a) => a.id === id) ?? null;
+  const found = mockAgencies.find((a) => a.id === id);
+  return found ? { ...found } : null;
 }
 
 /**

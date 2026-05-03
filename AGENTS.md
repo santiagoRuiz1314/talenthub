@@ -56,7 +56,12 @@
 ## 4. Workflow Rules
 
 - Current phase: Fase 2 - Maquetación estática (10 pantallas).
-- Current next step: define shared TypeScript types in `src/lib/types/`, define abstract async data layer in `src/lib/data/`, and create realistic mock data in `src/mocks/` before implementing screens.
+- Sub-block status (branch `fase-2/fundamentos`):
+  - Bloque A (tipos TypeScript): completed (commit d9ffcf5).
+  - Bloque B (capa de datos abstracta): completed (commit b41ccd3).
+  - Bloque C (mock data realista): completed (commit 5fdc5c4).
+  - Bloque D (pre-pantallas — `src/lib/constants.ts`, `CastingWithAgency`, `getCastingWithAgency`/`getCastingsWithAgency`, defensive shallow spread in id-getters, `@fase2` JSDoc on `createApplication`): in progress.
+- Current next step: implement screen 1 — feed público (`/`) after Bloque D lands.
 - Phases are strictly sequential:
   - Fase 0: design diagnosis.
   - Fase 1: project foundations.

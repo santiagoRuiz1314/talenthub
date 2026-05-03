@@ -21,10 +21,14 @@ function computeAge(birthDate: ISODateString): number {
   return age;
 }
 
-/** Talent por id, o `null` si no existe. */
+/**
+ * Talent por id, o `null` si no existe.
+ * Spread shallow defensivo: mutar el objeto retornado no toca el mock.
+ */
 export async function getTalent(id: UUID): Promise<Talent | null> {
   await simulateLatency();
-  return mockTalents.find((t) => t.id === id) ?? null;
+  const found = mockTalents.find((t) => t.id === id);
+  return found ? { ...found } : null;
 }
 
 /**

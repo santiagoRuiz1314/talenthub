@@ -22,7 +22,15 @@ Ver `talenthub-contexto-proyecto.md` (en la raíz del repo o en `/docs/`) para e
 
 ```
 Fase actual: 2 — Maquetación estática (10 pantallas)
-Próximo paso: Definir tipos TypeScript en src/lib/types/ + capa de datos abstracta en src/lib/data/ + mock data en src/mocks/ (antes de tocar pantallas)
+
+Sub-bloques en rama fase-2/fundamentos:
+  [x] Bloque A — tipos TypeScript                (commit d9ffcf5)
+  [x] Bloque B — capa de datos abstracta         (commit b41ccd3)
+  [x] Bloque C — mock data realista              (commit 5fdc5c4)
+  [~] Bloque D — pre-pantallas (constants, CastingWithAgency,
+                 helpers hidratados, spread defensivo en getters)
+
+Próximo paso: Pantalla 1 — feed público (/) tras cerrar Bloque D.
 Bloqueadores: Ninguno
 ```
 
