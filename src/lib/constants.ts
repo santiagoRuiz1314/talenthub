@@ -8,6 +8,7 @@ import type {
   ExperienceLevel,
   Gender,
   GenderRequirement,
+  LanguageCode,
   LanguageLevel,
 } from "@/lib/types";
 
@@ -91,4 +92,13 @@ export const LANGUAGE_LEVEL_LABELS: Record<LanguageLevel, string> = {
   intermediate: "Intermedio",
   advanced: "Avanzado",
   native: "Nativo",
+};
+
+export const LANGUAGE_CODE_LABELS: Record<LanguageCode, string> = {
+  es: "Español",
+  en: "Inglés",
+  pt: "Portugués",
+  fr: "Francés",
+  it: "Italiano",
+  de: "Alemán",
 };
