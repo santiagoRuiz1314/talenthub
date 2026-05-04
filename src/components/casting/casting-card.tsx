@@ -4,29 +4,9 @@ import { BadgeCheck, Bookmark, Calendar, MapPin } from "lucide-react";
 import { PhotoPlaceholder } from "@/components/shared/photo-placeholder";
 import { CITY_LABELS } from "@/lib/constants";
 import type { CastingWithAgency } from "@/lib/types";
+import { formatDeadline } from "@/lib/utils";
 
 import { TypeTag } from "./type-tag";
-
-const MONTHS_ES = [
-  "ene",
-  "feb",
-  "mar",
-  "abr",
-  "may",
-  "jun",
-  "jul",
-  "ago",
-  "sep",
-  "oct",
-  "nov",
-  "dic",
-];
-
-function formatDeadline(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return `${d.getDate()} ${MONTHS_ES[d.getMonth()]}`;
-}
 
 type Props = {
   casting: CastingWithAgency;
@@ -34,6 +14,7 @@ type Props = {
 
 export function CastingCard({ casting }: Props) {
   const isVerified = casting.agency.verificationStatus === "verified";
+  const firstPhoto = casting.photos?.[0];
   return (
     <article className="border-border bg-bg hover:border-ink relative flex flex-col overflow-hidden rounded-xl border transition-[border-color,transform] duration-150 hover:-translate-y-0.5">
       <Link
@@ -45,10 +26,18 @@ export function CastingCard({ casting }: Props) {
       </Link>
 
       <div className="relative p-2.5">
-        <PhotoPlaceholder
-          seed={casting.id}
-          className="aspect-[4/5] w-full rounded-lg"
-        />
+        {firstPhoto ? (
+          <img
+            src={firstPhoto.url}
+            alt={firstPhoto.alt ?? casting.title}
+            className="aspect-[4/5] w-full rounded-lg object-cover"
+          />
+        ) : (
+          <PhotoPlaceholder
+            seed={casting.id}
+            className="aspect-[4/5] w-full rounded-lg"
+          />
+        )}
         <div className="absolute top-[18px] left-[18px] z-20">
           <TypeTag category={casting.category} />
         </div>

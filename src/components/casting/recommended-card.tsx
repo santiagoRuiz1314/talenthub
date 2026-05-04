@@ -5,33 +5,14 @@ import { Sparkle } from "@/components/icons/sparkle";
 import { PhotoPlaceholder } from "@/components/shared/photo-placeholder";
 import { CITY_LABELS } from "@/lib/constants";
 import type { CastingWithAgency } from "@/lib/types";
-
-const MONTHS_ES = [
-  "ene",
-  "feb",
-  "mar",
-  "abr",
-  "may",
-  "jun",
-  "jul",
-  "ago",
-  "sep",
-  "oct",
-  "nov",
-  "dic",
-];
-
-function formatDeadline(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return `${d.getDate()} ${MONTHS_ES[d.getMonth()]}`;
-}
+import { formatDeadline } from "@/lib/utils";
 
 type Props = {
   casting: CastingWithAgency;
 };
 
 export function RecommendedCard({ casting }: Props) {
+  const firstPhoto = casting.photos?.[0];
   return (
     <article className="border-border hover:border-ink hover:bg-beige-soft relative grid grid-cols-[110px_1fr] overflow-hidden rounded-xl border transition-[border-color,background-color] duration-150">
       <Link
@@ -42,10 +23,18 @@ export function RecommendedCard({ casting }: Props) {
         <span className="sr-only">Ver casting {casting.title}</span>
       </Link>
       <div className="p-2">
-        <PhotoPlaceholder
-          seed={casting.id}
-          className="aspect-square h-full w-full rounded-md"
-        />
+        {firstPhoto ? (
+          <img
+            src={firstPhoto.url}
+            alt={firstPhoto.alt ?? casting.title}
+            className="aspect-square h-full w-full rounded-md object-cover"
+          />
+        ) : (
+          <PhotoPlaceholder
+            seed={casting.id}
+            className="aspect-square h-full w-full rounded-md"
+          />
+        )}
       </div>
       <div className="flex min-w-0 flex-col justify-between gap-2 px-3 py-3 pl-1">
         <div className="min-w-0">

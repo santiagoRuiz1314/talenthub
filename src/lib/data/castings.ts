@@ -187,6 +187,30 @@ export async function getCastingsWithAgency(
   return result;
 }
 
+/**
+ * Versión hidratada de `getRecommendedCastings`. Castings cuya agencia no
+ * existe se omiten. Deduplica por `agencyId` igual que `getCastingsWithAgency`.
+ */
+export async function getRecommendedCastingsWithAgency(
+  talentId: UUID,
+): Promise<CastingWithAgency[]> {
+  const castings = await getRecommendedCastings(talentId);
+  if (castings.length === 0) return [];
+  const uniqueAgencyIds = Array.from(new Set(castings.map((c) => c.agencyId)));
+  const agencies = await Promise.all(uniqueAgencyIds.map((id) => getAgency(id)));
+  const byId = new Map<UUID, Agency>();
+  for (const a of agencies) {
+    if (a) byId.set(a.id, a);
+  }
+  const result: CastingWithAgency[] = [];
+  for (const casting of castings) {
+    const agency = byId.get(casting.agencyId);
+    if (!agency) continue;
+    result.push({ ...casting, agency: pickPublicAgency(agency) });
+  }
+  return result;
+}
+
 function pickPublicAgency(
   agency: Agency,
 ): CastingWithAgency["agency"] {

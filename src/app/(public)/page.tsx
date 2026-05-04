@@ -4,20 +4,16 @@ import { CastingCardSkeleton } from "@/components/casting/casting-card-skeleton"
 import { CastingGrid } from "@/components/casting/casting-grid";
 import { FilterBar } from "@/components/casting/filter-bar";
 import { RecommendedRow } from "@/components/casting/recommended-row";
-import { getAgency } from "@/lib/data/agencies";
+import { CASTING_CATEGORY_LABELS, CITY_LABELS } from "@/lib/constants";
 import {
   getCastingsWithAgency,
-  getRecommendedCastings,
+  getRecommendedCastingsWithAgency,
 } from "@/lib/data/castings";
-import type {
-  CastingCategory,
-  CastingWithAgency,
-  City,
-} from "@/lib/types";
+import type { CastingCategory, City } from "@/lib/types";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
-const RECOMMENDED_FOR_USER_ID = "u_t_001";
+const RECOMMENDED_FOR_TALENT_ID = "t_001";
 
 export default async function FeedPage({
   searchParams,
@@ -25,12 +21,17 @@ export default async function FeedPage({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const category =
-    typeof params.category === "string"
-      ? (params.category as CastingCategory)
+  const rawCategory = typeof params.category === "string" ? params.category : undefined;
+  const rawCity = typeof params.city === "string" ? params.city : undefined;
+
+  const category: CastingCategory | undefined =
+    rawCategory && Object.keys(CASTING_CATEGORY_LABELS).includes(rawCategory)
+      ? (rawCategory as CastingCategory)
       : undefined;
-  const city =
-    typeof params.city === "string" ? (params.city as City) : undefined;
+  const city: City | undefined =
+    rawCity && Object.keys(CITY_LABELS).includes(rawCity)
+      ? (rawCity as City)
+      : undefined;
 
   // Suspense key fuerza re-suspensión cuando cambian los filtros — dispara el skeleton.
   const gridKey = `${category ?? "all"}-${city ?? "all"}`;
@@ -42,7 +43,7 @@ export default async function FeedPage({
       </Suspense>
 
       <Suspense fallback={<RecommendedRowFallback />}>
-        <RecommendedSection talentId={RECOMMENDED_FOR_USER_ID} />
+        <RecommendedSection talentId={RECOMMENDED_FOR_TALENT_ID} />
       </Suspense>
 
       <section className="mx-auto w-full max-w-[1280px] px-5 py-9 sm:px-8">
@@ -65,33 +66,9 @@ export default async function FeedPage({
 }
 
 async function RecommendedSection({ talentId }: { talentId: string }) {
-  const castings = await getRecommendedCastings(talentId);
+  const castings = await getRecommendedCastingsWithAgency(talentId);
   if (castings.length === 0) return null;
-  // Hidratamos agency inline (Fase 2): en Fase 3 se reemplaza por la query real.
-  const uniqueAgencyIds = Array.from(new Set(castings.map((c) => c.agencyId)));
-  const agencies = await Promise.all(
-    uniqueAgencyIds.map((id) => getAgency(id)),
-  );
-  const byId = new Map(
-    agencies
-      .filter((a): a is NonNullable<typeof a> => a !== null)
-      .map((a) => [a.id, a]),
-  );
-  const hydrated: CastingWithAgency[] = [];
-  for (const c of castings) {
-    const a = byId.get(c.agencyId);
-    if (!a) continue;
-    hydrated.push({
-      ...c,
-      agency: {
-        id: a.id,
-        name: a.name,
-        logoUrl: a.logoUrl,
-        verificationStatus: a.verificationStatus,
-      },
-    });
-  }
-  return <RecommendedRow castings={hydrated} />;
+  return <RecommendedRow castings={castings} />;
 }
 
 async function CastingGridAsync({

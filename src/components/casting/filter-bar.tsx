@@ -26,8 +26,16 @@ export function FilterBar() {
   const params = useSearchParams();
   const [openGroup, setOpenGroup] = useState<Group | null>("category");
 
-  const selectedCategory = params.get("category") as CastingCategory | null;
-  const selectedCity = params.get("city") as City | null;
+  const rawCategory = params.get("category");
+  const rawCity = params.get("city");
+  const selectedCategory: CastingCategory | null =
+    rawCategory && Object.keys(CASTING_CATEGORY_LABELS).includes(rawCategory)
+      ? (rawCategory as CastingCategory)
+      : null;
+  const selectedCity: City | null =
+    rawCity && Object.keys(CITY_LABELS).includes(rawCity)
+      ? (rawCity as City)
+      : null;
   const totalActive = (selectedCategory ? 1 : 0) + (selectedCity ? 1 : 0);
 
   const updateParam = (key: string, value: string | null) => {
