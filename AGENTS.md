@@ -55,17 +55,21 @@
 
 ## 4. Workflow Rules
 
-- Current phase: Fase 2 - Maquetación estática (10 pantallas).
+- Current phase: Fase 2 - Maquetación estática (11 pantallas).
 - Sub-block status (branch `fase-2/fundamentos`):
   - Bloque A (tipos TypeScript): completed (commit d9ffcf5).
   - Bloque B (capa de datos abstracta): completed (commit b41ccd3).
   - Bloque C (mock data realista): completed (commit 5fdc5c4).
-  - Bloque D (pre-pantallas — `src/lib/constants.ts`, `CastingWithAgency`, `getCastingWithAgency`/`getCastingsWithAgency`, defensive shallow spread in id-getters, `@fase2` JSDoc on `createApplication`): in progress.
-- Current next step: implement screen 1 — feed público (`/`) after Bloque D lands.
+  - Bloque D (pre-pantallas — `src/lib/constants.ts`, `CastingWithAgency`, `getCastingWithAgency`/`getCastingsWithAgency`, defensive shallow spread in id-getters, `@fase2` JSDoc on `createApplication`): completed.
+  - Bloque E (Pantalla 1 — feed público `/`): completed (commit 43a697a).
+- Screens completed:
+  - Pantalla 1 — feed público (`/`): completed (commit 43a697a).
+  - Pantalla 2 — detalle casting (`/castings/[id]`): completed (commit 27bf55f).
+- Current next step: implement screen 3 — Login (`/login`).
 - Phases are strictly sequential:
   - Fase 0: design diagnosis.
   - Fase 1: project foundations.
-  - Fase 2: static 10-screen mock implementation.
+  - Fase 2: static 11-screen mock implementation.
   - Fase 3: backend, data, auth.
   - Fase 4: AI layer.
   - Fase 5: polish and deployment.
@@ -74,13 +78,14 @@
 - Do not start Fase 5 until Fase 4 is complete and David confirms phase advancement.
 - At the end of a phase, propose updating `CLAUDE.md` section "Estado actual"; wait for confirmation.
 - Definition of Done is the checklist in `CLAUDE.md` for the active phase.
-- Fase 2 must produce 10 static, navigable, responsive screens with mock data and no backend.
-- Fase 2 screen order:
-  - `/`
-  - `/castings/[id]`
-  - `/login`
+- Fase 2 must produce 11 static, navigable, responsive screens with mock data and no backend.
+- Fase 2 screen order (✅ = done, ← = next):
+  - `/` ✅
+  - `/castings/[id]` ✅
+  - `/login` ←
   - `/register/talent`
   - `/onboarding`
+  - `/onboarding/completar`
   - `/profile`
   - `/applications`
   - `/agency/dashboard`

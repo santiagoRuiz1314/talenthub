@@ -21,16 +21,21 @@ Ver `talenthub-contexto-proyecto.md` (en la raíz del repo o en `/docs/`) para e
 ## 2. 📍 Estado actual
 
 ```
-Fase actual: 2 — Maquetación estática (10 pantallas)
+Fase actual: 2 — Maquetación estática (11 pantallas)
 
 Sub-bloques en rama fase-2/fundamentos:
   [x] Bloque A — tipos TypeScript                (commit d9ffcf5)
   [x] Bloque B — capa de datos abstracta         (commit b41ccd3)
   [x] Bloque C — mock data realista              (commit 5fdc5c4)
-  [~] Bloque D — pre-pantallas (constants, CastingWithAgency,
+  [x] Bloque D — pre-pantallas (constants, CastingWithAgency,
                  helpers hidratados, spread defensivo en getters)
+  [x] Bloque E — Pantalla 1 feed público (/)     (commit 43a697a)
 
-Próximo paso: Pantalla 1 — feed público (/) tras cerrar Bloque D.
+Pantallas completadas:
+  [x] Pantalla 1  — feed público (/)                     (commit 43a697a)
+  [x] Pantalla 2  — detalle casting (/castings/[id])      (commit 27bf55f)
+
+Próximo paso: Pantalla 3 — Login (/login)
 Bloqueadores: Ninguno
 ```
 
@@ -39,7 +44,7 @@ Bloqueadores: Ninguno
 **Historial de fases:**
 - [x] Fase 0 — Diagnóstico del diseño (cerrada 2026-05-01)
 - [x] Fase 1 — Fundamentos del proyecto (cerrada 2026-05-02)
-- [ ] Fase 2 — Maquetación estática (10 pantallas)
+- [ ] Fase 2 — Maquetación estática (11 pantallas)
 - [ ] Fase 3 — Backend, datos, auth
 - [ ] Fase 4 — Capa de IA
 - [ ] Fase 5 — Pulido y despliegue
@@ -376,18 +381,22 @@ return (
 - Definir la **capa de datos abstracta** en `src/lib/data/` con mocks. Toda función debe ser `async` y retornar `Promise<T>` aunque sea mock — esto facilita Fase 3.
 - Generar **mock data realista** en `src/mocks/` (mínimo 30 castings, 50 talentos, 8 agencias).
 
-**Las 10 pantallas (en orden sugerido de implementación):**
+**Las 11 pantallas (en orden sugerido de implementación):**
 
-1. **Feed público de castings** — `/`
-2. **Detalle de un casting** — `/castings/[id]`
+> Nota: el brief original contemplaba 10 pantallas. Fase 0 reveló que el onboarding
+> requiere 2 rutas separadas (decisión registrada en §9), sumando 11 en total.
+
+1. **Feed público de castings** — `/` ✅
+2. **Detalle de un casting** — `/castings/[id]` ✅
 3. **Login** — `/login`
 4. **Registro talento** — `/register/talent`
-5. **Onboarding talento (subir PDF + completar)** — `/onboarding`
-6. **Perfil talento** — `/profile`
-7. **Aplicaciones del talento** — `/applications`
-8. **Dashboard agencia** — `/agency/dashboard`
-9. **Crear casting** — `/agency/castings/new`
-10. **Aplicantes por casting** — `/agency/castings/[id]/applicants`
+5. **Onboarding talento paso 1 (subir PDF)** — `/onboarding`
+6. **Onboarding talento paso 2 (completar perfil)** — `/onboarding/completar`
+7. **Perfil talento** — `/profile`
+8. **Aplicaciones del talento** — `/applications`
+9. **Dashboard agencia** — `/agency/dashboard`
+10. **Crear casting** — `/agency/castings/new`
+11. **Aplicantes por casting** — `/agency/castings/[id]/applicants`
 
 **Reglas para esta fase:**
 - Todo se renderiza con mock data. Auth se simula con un toggle en el header del sandbox o un cookie mock.
