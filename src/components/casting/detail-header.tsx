@@ -2,7 +2,11 @@ import { Bookmark, Calendar, Clock, MapPin } from "lucide-react";
 
 import { PhotoPlaceholder } from "@/components/shared/photo-placeholder";
 import { VerifiedBadge } from "@/components/shared/verified-badge";
-import { CASTING_CATEGORY_LABELS, CITY_LABELS } from "@/lib/constants";
+import {
+  CASTING_CATEGORY_LABELS,
+  CASTING_DETAIL_COPY,
+  CITY_LABELS,
+} from "@/lib/constants";
 import type { CastingWithAgency } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +33,8 @@ function formatFull(iso: string): string {
 
 function isUrgent(deadline: string): boolean {
   const d = new Date(deadline);
-  return (d.getTime() - Date.now()) / (1000 * 60 * 60 * 24) <= 7;
+  const diffDays = (d.getTime() - Date.now()) / (1000 * 60 * 60 * 24);
+  return diffDays >= 0 && diffDays <= 7;
 }
 
 function agencyInitials(name: string): string {
@@ -109,7 +114,7 @@ export function DetailHeader({ casting }: Props) {
               </span>
               {urgent && (
                 <span className="bg-coral-soft text-coral-deep rounded-full px-[9px] py-[3px] text-[11.5px] font-semibold tracking-[0.02em]">
-                  Cierra pronto
+                  {CASTING_DETAIL_COPY.urgentLabel}
                 </span>
               )}
             </div>
@@ -155,8 +160,8 @@ export function DetailHeader({ casting }: Props) {
                 </div>
                 <span className="text-ink-muted text-[12.5px]">
                   {casting.publishedAt
-                    ? `Publicado el ${formatFull(casting.publishedAt)}`
-                    : "Publicado recientemente"}
+                    ? `${CASTING_DETAIL_COPY.publishedOn} ${formatFull(casting.publishedAt)}`
+                    : CASTING_DETAIL_COPY.publishedRecently}
                 </span>
               </div>
             </div>
@@ -166,22 +171,22 @@ export function DetailHeader({ casting }: Props) {
           <div className="border-border overflow-hidden rounded-xl border">
             <div className="grid grid-cols-3">
               <MetaCell
-                label="Ciudad"
+                label={CASTING_DETAIL_COPY.metaCity}
                 value={CITY_LABELS[casting.city]}
                 icon={<MapPin size={11} strokeWidth={1.5} aria-hidden />}
               />
               <MetaCell
-                label="Fecha de shoot"
+                label={CASTING_DETAIL_COPY.shootDateLabel}
                 value={
                   casting.shootDate
                     ? formatFull(casting.shootDate)
-                    : "Por confirmar"
+                    : CASTING_DETAIL_COPY.shootDateTbd
                 }
                 icon={<Calendar size={11} strokeWidth={1.5} aria-hidden />}
                 divider
               />
               <MetaCell
-                label="Cierra aplicación"
+                label={CASTING_DETAIL_COPY.metaDeadlineLabel}
                 value={formatFull(casting.deadline)}
                 icon={<Clock size={11} strokeWidth={1.5} aria-hidden />}
                 divider
@@ -207,11 +212,11 @@ export function DetailHeader({ casting }: Props) {
           )}
           <button
             type="button"
-            aria-label="Guardar casting"
+            aria-label={CASTING_DETAIL_COPY.saveCastingAriaLabel}
             className="border-border text-ink absolute top-4 right-4 flex items-center gap-1.5 rounded-[10px] border bg-white/95 px-3 py-2 text-[12.5px] font-medium backdrop-blur-[8px] transition-colors hover:bg-white"
           >
             <Bookmark size={13} strokeWidth={1.5} aria-hidden />
-            Guardar
+            {CASTING_DETAIL_COPY.save}
           </button>
         </div>
       </div>

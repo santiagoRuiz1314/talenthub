@@ -102,3 +102,49 @@ export const LANGUAGE_CODE_LABELS: Record<LanguageCode, string> = {
   it: "Italiano",
   de: "Alemán",
 };
+
+export const CASTING_DETAIL_COPY = {
+  // Header / urgencia
+  urgentLabel: "Cierra pronto",
+  // Meta grid
+  metaCity: "Ciudad",
+  shootDateLabel: "Fecha de shoot",
+  metaDeadlineLabel: "Cierra aplicación",
+  // Info de agencia
+  publishedOn: "Publicado el",
+  publishedRecently: "Publicado recientemente",
+  // Fecha fallback
+  shootDateTbd: "Por confirmar",
+  // Acción guardar
+  save: "Guardar",
+  saveCastingAriaLabel: "Guardar casting",
+  // Flujo de aplicación
+  deadlinePrefix: "Cierra",
+  applyNow: "Aplicar a este casting",
+  applyShort: "Aplicar",
+  applied: "Aplicado",
+  applicationSent: "Aplicación enviada",
+  // Bloque CTA
+  ctaHeading: "¿Te encaja este casting?",
+  ctaBody: "Aplica gratis y la agencia recibirá tu portafolio.",
+  // Títulos y kickers de sección
+  descriptionTitle: "Descripción",
+  descriptionKicker: "Sobre el proyecto",
+  requirementsTitle: "Requisitos",
+  requirementsKicker: "Perfil buscado",
+  additionalInfoTitle: "Información adicional",
+  additionalInfoKicker: "Detalles",
+  similaresTitle: "Castings similares",
+  similaresKicker: "También te pueden interesar",
+  // Labels de requisitos
+  reqAge: "Edad",
+  reqGender: "Género",
+  reqHeight: "Altura",
+  reqLanguages: "Idiomas",
+  reqFeatures: "Características",
+  reqExperience: "Experiencia",
+  // Labels de info adicional
+  additionalLocation: "Lugar",
+  additionalModality: "Modalidad",
+  additionalModalityValue: "Presencial",
+} as const;

@@ -9,6 +9,7 @@ import {
   ReqLanguage,
 } from "@/components/icons/req-icons";
 import {
+  CASTING_DETAIL_COPY,
   EXPERIENCE_LEVEL_LABELS,
   GENDER_REQUIREMENT_LABELS,
   LANGUAGE_CODE_LABELS,
@@ -33,42 +34,42 @@ function buildItems(req: CastingRequirements): ReqItem[] {
   if (req.ageRange) {
     items.push({
       icon: <ReqAge size={16} strokeWidth={1.5} />,
-      label: "Edad",
+      label: CASTING_DETAIL_COPY.reqAge,
       value: `${req.ageRange.min}–${req.ageRange.max} años`,
     });
   }
   if (req.gender) {
     items.push({
       icon: <ReqGender size={16} strokeWidth={1.5} />,
-      label: "Género",
+      label: CASTING_DETAIL_COPY.reqGender,
       value: GENDER_REQUIREMENT_LABELS[req.gender],
     });
   }
   if (req.heightRange) {
     items.push({
       icon: <ReqHeight size={16} strokeWidth={1.5} />,
-      label: "Altura",
+      label: CASTING_DETAIL_COPY.reqHeight,
       value: `${req.heightRange.minCm}–${req.heightRange.maxCm} cm`,
     });
   }
   if (req.languages?.length) {
     items.push({
       icon: <ReqLanguage size={16} strokeWidth={1.5} />,
-      label: "Idiomas",
+      label: CASTING_DETAIL_COPY.reqLanguages,
       value: req.languages.map((l) => LANGUAGE_CODE_LABELS[l]).join(", "),
     });
   }
   if (req.features?.length) {
     items.push({
       icon: <ReqFeatures size={16} strokeWidth={1.5} />,
-      label: "Características",
+      label: CASTING_DETAIL_COPY.reqFeatures,
       value: req.features.join(", "),
     });
   }
   if (req.experience) {
     items.push({
       icon: <ReqExp size={16} strokeWidth={1.5} />,
-      label: "Experiencia",
+      label: CASTING_DETAIL_COPY.reqExperience,
       value: EXPERIENCE_LEVEL_LABELS[req.experience],
     });
   }
@@ -81,7 +82,7 @@ export function DetailRequirements({ requirements }: Props) {
   if (items.length === 0) return null;
 
   return (
-    <DetailSection title="Requisitos" kicker="Perfil buscado">
+    <DetailSection title={CASTING_DETAIL_COPY.requirementsTitle} kicker={CASTING_DETAIL_COPY.requirementsKicker}>
       <div className="grid max-w-[760px] grid-cols-1 gap-3 sm:grid-cols-2">
         {items.map((item) => (
           <div

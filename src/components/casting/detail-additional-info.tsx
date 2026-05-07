@@ -1,4 +1,4 @@
-import { CITY_LABELS } from "@/lib/constants";
+import { CASTING_DETAIL_COPY, CITY_LABELS } from "@/lib/constants";
 import type { CastingWithAgency } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -43,25 +43,25 @@ export function DetailAdditionalInfo({ casting }: Props) {
   const items: InfoItem[] = [];
 
   if (casting.location) {
-    items.push({ label: "Lugar", value: casting.location, featured: true });
+    items.push({ label: CASTING_DETAIL_COPY.additionalLocation, value: casting.location, featured: true });
   }
 
   items.push({
-    label: "Fecha de shoot",
-    value: casting.shootDate ? formatVerbose(casting.shootDate) : "Por confirmar",
+    label: CASTING_DETAIL_COPY.shootDateLabel,
+    value: casting.shootDate ? formatVerbose(casting.shootDate) : CASTING_DETAIL_COPY.shootDateTbd,
     tbd: !casting.shootDate,
   });
 
   if (casting.location) {
     items.push({
-      label: "Modalidad",
-      value: "Presencial",
+      label: CASTING_DETAIL_COPY.additionalModality,
+      value: CASTING_DETAIL_COPY.additionalModalityValue,
       note: CITY_LABELS[casting.city],
     });
   }
 
   return (
-    <DetailSection title="Información adicional" kicker="Detalles">
+    <DetailSection title={CASTING_DETAIL_COPY.additionalInfoTitle} kicker={CASTING_DETAIL_COPY.additionalInfoKicker}>
       <div
         className={cn(
           "grid max-w-[760px] gap-4",

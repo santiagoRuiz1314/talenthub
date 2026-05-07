@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { formatDeadline } from "@/lib/utils";
+import { CASTING_DETAIL_COPY } from "@/lib/constants";
+import { cn, formatDeadline } from "@/lib/utils";
 
 type Props = {
   title: string;
@@ -35,7 +35,7 @@ export function DetailApplyBar({ title, deadline, applied, onApply }: Props) {
       <div className="bg-ink text-bg pointer-events-auto flex max-w-[calc(100%-32px)] items-center gap-3.5 rounded-full py-2.5 pl-[22px] pr-2.5 shadow-floating">
         <div className="flex min-w-0 flex-col gap-0.5">
           <span className="text-[11px] font-medium uppercase tracking-[0.08em] opacity-60">
-            Cierra {formatDeadline(deadline)}
+            {CASTING_DETAIL_COPY.deadlinePrefix} {formatDeadline(deadline)}
           </span>
           <span className="font-display max-w-[320px] truncate text-[14px] font-medium">
             {title}
@@ -45,7 +45,7 @@ export function DetailApplyBar({ title, deadline, applied, onApply }: Props) {
           type="button"
           onClick={applied ? undefined : onApply}
           disabled={applied}
-          aria-label={applied ? "Aplicación enviada" : "Aplicar a este casting"}
+          aria-label={applied ? CASTING_DETAIL_COPY.applicationSent : CASTING_DETAIL_COPY.applyNow}
           className={cn(
             "flex shrink-0 items-center gap-1.5 rounded-full px-[22px] py-3 text-[14px] font-semibold transition-colors duration-150",
             applied
@@ -55,12 +55,12 @@ export function DetailApplyBar({ title, deadline, applied, onApply }: Props) {
         >
           {applied ? (
             <>
-              <Check size={14} strokeWidth={2} aria-hidden />
-              Aplicado
+              <Check size={14} strokeWidth={1.5} aria-hidden />
+              {CASTING_DETAIL_COPY.applied}
             </>
           ) : (
             <>
-              Aplicar
+              {CASTING_DETAIL_COPY.applyShort}
               <ArrowRight size={13} strokeWidth={1.5} aria-hidden />
             </>
           )}

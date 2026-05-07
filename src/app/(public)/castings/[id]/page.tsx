@@ -10,6 +10,7 @@ import { DetailSimilares } from "@/components/casting/detail-similares";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { Footer } from "@/components/shared/footer";
 import { getCastingWithAgency, getCastingsWithAgency } from "@/lib/data/castings";
+import { parseCastingIdParam } from "@/lib/utils";
 
 type Params = Promise<{ id: string }>;
 
@@ -18,8 +19,11 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
+  // TODO(fase-3): deduplicar con cache() o helper memoizado
   const { id } = await params;
-  const casting = await getCastingWithAgency(id);
+  const castingId = parseCastingIdParam(id);
+  if (!castingId) return {};
+  const casting = await getCastingWithAgency(castingId);
   if (!casting) return {};
   return {
     title: `${casting.title} | TalentHub`,
@@ -33,16 +37,18 @@ export default async function CastingDetailPage({
   params: Params;
 }) {
   const { id } = await params;
+  const castingId = parseCastingIdParam(id);
+  if (!castingId) notFound();
 
-  const casting = await getCastingWithAgency(id);
-  if (!casting) notFound();
+  const casting = await getCastingWithAgency(castingId);
+  if (!casting || casting.status !== "active") notFound();
 
   // Similares: misma categoría, activos, excluye el actual, máximo 3
   const allSimilar = await getCastingsWithAgency({
     category: casting.category,
     status: "active",
   });
-  const similares = allSimilar.filter((c) => c.id !== id).slice(0, 3);
+  const similares = allSimilar.filter((c) => c.id !== castingId).slice(0, 3);
 
   return (
     <>

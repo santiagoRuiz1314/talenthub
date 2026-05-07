@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { CASTING_DETAIL_COPY } from "@/lib/constants";
 import type { CastingWithAgency } from "@/lib/types";
 
 import { DetailApplyBar } from "./detail-apply-bar";
@@ -18,7 +19,7 @@ export function DetailApplySection({ casting }: Props) {
 
   function handleApply() {
     setApplied(true);
-    toast.success("Aplicación enviada ✓");
+    toast.success(CASTING_DETAIL_COPY.applicationSent);
   }
 
   return (

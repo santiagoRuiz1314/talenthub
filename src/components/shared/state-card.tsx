@@ -3,6 +3,9 @@ import { AlertTriangle, CircleCheck, Inbox } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+const SHIMMER =
+  "animate-th-shimmer bg-[linear-gradient(90deg,var(--beige-soft)_0%,var(--bg)_50%,var(--beige-soft)_100%)] bg-[length:200%_100%]";
+
 type Variant = "empty" | "error" | "loading" | "success";
 
 type Props = {
@@ -62,6 +65,25 @@ export function StateCard({
   cta,
   className,
 }: Props) {
+  if (variant === "loading") {
+    return (
+      <div
+        aria-hidden
+        className={cn(
+          "rounded-xl border px-8 py-10",
+          VARIANT_BORDER.loading,
+          className,
+        )}
+      >
+        <div className="space-y-3">
+          <div className={cn("h-5 w-1/3 rounded", SHIMMER)} />
+          <div className={cn("h-4 w-2/3 rounded", SHIMMER)} />
+          <div className={cn("h-4 w-1/2 rounded", SHIMMER)} />
+        </div>
+      </div>
+    );
+  }
+
   const resolvedTitle = title ?? VARIANT_DEFAULTS[variant].title;
   const resolvedBody = body ?? VARIANT_DEFAULTS[variant].body;
   const iconNode = icon ?? VARIANT_ICON[variant];

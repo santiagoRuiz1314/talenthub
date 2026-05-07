@@ -17,3 +17,8 @@ export function formatDeadline(dateString: ISODateString): string {
   if (Number.isNaN(d.getTime())) return dateString;
   return `${d.getDate()} ${MONTHS_ES[d.getMonth()]}`;
 }
+
+export function parseCastingIdParam(id: unknown): string | null {
+  if (typeof id !== "string" || id.trim() === "") return null;
+  return id.trim();
+}
