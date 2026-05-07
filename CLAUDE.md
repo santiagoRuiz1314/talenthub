@@ -34,8 +34,9 @@ Sub-bloques en rama fase-2/fundamentos:
 Pantallas completadas:
   [x] Pantalla 1  — feed público (/)                     (commit 43a697a)
   [x] Pantalla 2  — detalle casting (/castings/[id])      (commit 27bf55f)
+  [x] Pantalla 3  — login (/login)                        (commit f3f3fdc)
 
-Próximo paso: Pantalla 3 — Login (/login)
+Próximo paso: Pantalla 4 — Registro talento (/register/talent)
 Bloqueadores: Ninguno
 ```
 
@@ -391,7 +392,7 @@ return (
 
 1. **Feed público de castings** — `/` ✅
 2. **Detalle de un casting** — `/castings/[id]` ✅
-3. **Login** — `/login`
+3. **Login** — `/login` ✅
 4. **Registro talento** — `/register/talent`
 5. **Onboarding talento paso 1 (subir PDF)** — `/onboarding`
 6. **Onboarding talento paso 2 (completar perfil)** — `/onboarding/completar`

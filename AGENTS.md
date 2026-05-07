@@ -65,7 +65,8 @@
 - Screens completed:
   - Pantalla 1 — feed público (`/`): completed (commit 43a697a).
   - Pantalla 2 — detalle casting (`/castings/[id]`): completed (commit 27bf55f).
-- Current next step: implement screen 3 — Login (`/login`).
+  - Pantalla 3 — login (`/login`): completed (commit f3f3fdc).
+- Current next step: implement screen 4 — Registro talento (`/register/talent`).
 - Phases are strictly sequential:
   - Fase 0: design diagnosis.
   - Fase 1: project foundations.
@@ -82,8 +83,8 @@
 - Fase 2 screen order (✅ = done, ← = next):
   - `/` ✅
   - `/castings/[id]` ✅
-  - `/login` ←
-  - `/register/talent`
+  - `/login` ✅
+  - `/register/talent` ←
   - `/onboarding`
   - `/onboarding/completar`
   - `/profile`
