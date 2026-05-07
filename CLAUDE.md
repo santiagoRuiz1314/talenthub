@@ -242,6 +242,7 @@ talenthub/
 **Stack:**
 - **`react-hook-form`** para estado del form (no `useState` por campo).
 - **`zod`** para schema de validación. El schema vive en `src/lib/schemas/<entidad>.ts` y exporta el tipo inferido (`type CastingForm = z.infer<typeof castingSchema>`) que se reusa en `src/lib/types/`.
+- **Resolver: `standardSchemaResolver`** de `@hookform/resolvers/standard-schema`. **No usar `zodResolver` de `@hookform/resolvers/zod`** — es incompatible con zod v4.4+ a nivel de tipos (`_zod.version.minor` mismatch). Zod v4 implementa `StandardSchemaV1` nativamente, así que `standardSchemaResolver` es el path correcto.
 - **shadcn primitivas directas:** `<Input>`, `<Label>`, `<Textarea>`, `<Select>`, `<ToggleGroup>` (no hay wrapper `<Form>` en `base-nova`).
 - **Modo de validación:** `onBlur` por defecto en todos los formularios. Esto valida cuando el usuario sale del campo, no en cada keystroke (ruidoso) ni solo al submit (frustrante).
 - **Errores inline** debajo del input con `text-xs text-danger mt-1`. Sin tooltips, sin modales de error.
@@ -250,8 +251,10 @@ talenthub/
 **Estructura visual canónica:**
 
 ```tsx
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+
 const { register, handleSubmit, formState: { errors, isValid } } = useForm<CastingForm>({
-  resolver: zodResolver(castingSchema),
+  resolver: standardSchemaResolver(castingSchema),
   mode: "onBlur",
   defaultValues: { /* ... */ }
 });
@@ -556,6 +559,7 @@ Tomar decisión, documentar razones, **luego** ejecutar.
 - **2026-05-02** — `sonner` reemplaza al antiguo `toast` legacy de shadcn. — Recomendación oficial de shadcn; API más limpia y package más liviano.
 - **2026-05-02** — `AGENTS.md` como complemento operacional de `CLAUDE.md`. — Aloja reglas urgentes del stack que pueden no estar en el training de un agente; `CLAUDE.md` aloja la visión y las decisiones. Cada agente debe leer ambos al iniciar (workflow §3).
 - **2026-05-02** — Patrón canónico de formularios: `react-hook-form` + `zod` + primitivas shadcn directas, modo de validación `onBlur`. — Establecido en §6. El primer form de Fase 2 ("Crear casting") materializa el patrón.
+- **2026-05-07** — Resolver canónico: `standardSchemaResolver` de `@hookform/resolvers/standard-schema`. — `zodResolver` de `@hookform/resolvers/zod` es incompatible con zod v4.4+ (`_zod.version.minor` mismatch a nivel de tipos). Zod v4 implementa `StandardSchemaV1` nativo, así que `standardSchemaResolver` resuelve correctamente sin hacks. Descubierto al implementar Pantalla 3 (Login).
 
 ---
 

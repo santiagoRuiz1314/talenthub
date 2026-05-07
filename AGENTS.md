@@ -221,6 +221,7 @@
 - Never assume Tailwind v3 configuration patterns.
 - Never assume shadcn legacy Radix APIs for `base-nova`.
 - Never use a shadcn `Form` wrapper in this project.
+- Never use `zodResolver` from `@hookform/resolvers/zod`; use `standardSchemaResolver` from `@hookform/resolvers/standard-schema` instead (zod v4 / `StandardSchemaV1` compatibility).
 - Never use legacy shadcn toast APIs instead of `sonner`.
 - Never add `--turbopack` to scripts.
 - Never use `next lint`.
@@ -262,6 +263,7 @@
 - For forms, use the canonical pattern:
   - `react-hook-form`
   - `zod`
+  - resolver: `standardSchemaResolver` from `@hookform/resolvers/standard-schema` — NOT `zodResolver` from `@hookform/resolvers/zod` (incompatible with zod v4.4+ at the type level)
   - schema in `src/lib/schemas/<entity>.ts`
   - inferred type reused in types where appropriate
   - validation mode `onBlur`
