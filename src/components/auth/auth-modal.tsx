@@ -18,8 +18,7 @@ type Role = "talent" | "agency";
 export type AuthModalProps = {
   mode: "modal" | "page";
   initialRole?: Role;
-  /** Solo en mode=page: controla el cross-link inferior (login ↔ registro). */
-  pageVariant?: "login" | "register";
+  pageVariant?: "login" | "register"; // default "login". La combinación mode="modal" + pageVariant="register" es válida pero no tiene caso de uso en Fase 2.
   onClose?: () => void;
 };
 
@@ -34,6 +33,11 @@ const ROLE_COPY = {
   },
 } as const;
 
+const REGISTER_COPY = {
+  heading: "Crea tu cuenta",
+  sub: "Únete y deja que las agencias te encuentren.",
+} as const;
+
 const ROLE_OPTIONS: { id: Role; label: string; sub: string }[] = [
   { id: "talent", label: "Soy talento", sub: "Modelo, actor, creador" },
   { id: "agency", label: "Soy agencia", sub: "Publico castings" },
@@ -42,7 +46,7 @@ const ROLE_OPTIONS: { id: Role; label: string; sub: string }[] = [
 export function AuthModal({ mode, initialRole = "talent", pageVariant, onClose }: AuthModalProps) {
   const [activeRole, setActiveRole] = useState<Role>(initialRole);
 
-  const copy = ROLE_COPY[activeRole];
+  const copy = pageVariant === "register" ? REGISTER_COPY : ROLE_COPY[activeRole];
 
   const {
     register,
@@ -88,39 +92,41 @@ export function AuthModal({ mode, initialRole = "talent", pageVariant, onClose }
       </h2>
       <p className="text-ink-muted mb-6 text-[14px] leading-[1.5]">{copy.sub}</p>
 
-      {/* Toggle talento / agencia */}
-      <div className="bg-beige-soft mb-5 grid grid-cols-2 gap-1 rounded-[10px] p-1">
-        {ROLE_OPTIONS.map((opt) => {
-          const active = activeRole === opt.id;
-          return (
-            <button
-              key={opt.id}
-              type="button"
-              disabled={isSubmitting}
-              aria-pressed={active}
-              onClick={() => setActiveRole(opt.id)}
-              className={cn(
-                "flex flex-col gap-0.5 rounded-lg px-3 py-2.5 text-left transition-all duration-150",
-                "focus-visible:ring-ink focus-visible:ring-2 focus-visible:outline-none",
-                active
-                  ? "bg-bg border-border border shadow-[0_1px_2px_rgba(10,10,10,0.04)]"
-                  : "border border-transparent",
-                isSubmitting && "cursor-not-allowed opacity-50",
-              )}
-            >
-              <span
+      {/* Toggle talento / agencia — oculto en pageVariant="register" (rol ya está fijo) */}
+      {pageVariant !== "register" && (
+        <div className="bg-beige-soft mb-5 grid grid-cols-2 gap-1 rounded-[10px] p-1">
+          {ROLE_OPTIONS.map((opt) => {
+            const active = activeRole === opt.id;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                disabled={isSubmitting}
+                aria-pressed={active}
+                onClick={() => setActiveRole(opt.id)}
                 className={cn(
-                  "text-[13px] leading-none font-medium",
-                  active ? "text-ink" : "text-ink-muted",
+                  "flex flex-col gap-0.5 rounded-lg px-3 py-2.5 text-left transition-all duration-150",
+                  "focus-visible:ring-ink focus-visible:ring-2 focus-visible:outline-none",
+                  active
+                    ? "bg-bg border-border border shadow-[0_1px_2px_rgba(10,10,10,0.04)]"
+                    : "border border-transparent",
+                  isSubmitting && "cursor-not-allowed opacity-50",
                 )}
               >
-                {opt.label}
-              </span>
-              <span className="text-ink-muted mt-0.5 text-[11px] leading-none">{opt.sub}</span>
-            </button>
-          );
-        })}
-      </div>
+                <span
+                  className={cn(
+                    "text-[13px] leading-none font-medium",
+                    active ? "text-ink" : "text-ink-muted",
+                  )}
+                >
+                  {opt.label}
+                </span>
+                <span className="text-ink-muted mt-0.5 text-[11px] leading-none">{opt.sub}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Botón Google */}
       <button
