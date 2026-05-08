@@ -14,11 +14,7 @@ import { parseCastingIdParam } from "@/lib/utils";
 
 type Params = Promise<{ id: string }>;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   // TODO(fase-3): deduplicar con cache() o helper memoizado
   const { id } = await params;
   const castingId = parseCastingIdParam(id);
@@ -31,11 +27,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function CastingDetailPage({
-  params,
-}: {
-  params: Params;
-}) {
+export default async function CastingDetailPage({ params }: { params: Params }) {
   const { id } = await params;
   const castingId = parseCastingIdParam(id);
   if (!castingId) notFound();

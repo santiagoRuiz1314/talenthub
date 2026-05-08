@@ -14,7 +14,7 @@ export default function CastingNotFound() {
         cta={
           <Link
             href="/"
-            className="bg-coral text-white hover:bg-coral-deep inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[14px] font-semibold transition-colors"
+            className="bg-coral hover:bg-coral-deep inline-flex items-center gap-2 rounded-[10px] px-5 py-2.5 text-[14px] font-semibold text-white transition-colors"
           >
             Ver todos los castings
           </Link>

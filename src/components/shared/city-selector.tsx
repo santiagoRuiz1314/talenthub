@@ -52,7 +52,7 @@ export function CitySelector() {
         aria-expanded={open}
         className={cn(
           "border-border text-ink inline-flex items-center gap-2 rounded-md border px-3 py-2 text-[13.5px] font-medium transition-colors",
-          open ? "bg-beige" : "bg-transparent hover:bg-beige-soft",
+          open ? "bg-beige" : "hover:bg-beige-soft bg-transparent",
         )}
       >
         <MapPin size={14} strokeWidth={1.5} />
@@ -74,9 +74,7 @@ export function CitySelector() {
               onClick={() => select(null)}
               className={cn(
                 "flex w-full items-center rounded-md px-2.5 py-2 text-left text-[13.5px] transition-colors",
-                current === null
-                  ? "bg-beige text-ink font-medium"
-                  : "text-ink hover:bg-beige-soft",
+                current === null ? "bg-beige text-ink font-medium" : "text-ink hover:bg-beige-soft",
               )}
             >
               Todas las ciudades

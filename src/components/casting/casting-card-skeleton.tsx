@@ -5,10 +5,7 @@ const SHIMMER =
 
 export function CastingCardSkeleton() {
   return (
-    <div
-      aria-hidden
-      className="border-border flex flex-col overflow-hidden rounded-xl border"
-    >
+    <div aria-hidden className="border-border flex flex-col overflow-hidden rounded-xl border">
       <div className="p-2.5">
         <div className={cn("aspect-[4/5] w-full rounded-lg", SHIMMER)} />
       </div>

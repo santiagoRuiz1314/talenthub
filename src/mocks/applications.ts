@@ -1,7 +1,4 @@
-import type {
-  Application,
-  ApplicationStatus,
-} from "@/lib/types/application";
+import type { Application, ApplicationStatus } from "@/lib/types/application";
 
 import { daysAgo, pad3 } from "./_helpers";
 
@@ -104,7 +101,7 @@ for (let i = 1; i < 50; i++) {
   const talentId = `t_${talentIdx}`;
   const numApps = 1 + (i % 3); // 1..3
   for (let j = 0; j < numApps; j++) {
-    let castingNum = (((i * 7) + j * 11) % TOTAL_CASTINGS) + 1;
+    let castingNum = ((i * 7 + j * 11) % TOTAL_CASTINGS) + 1;
     let castingId = `c_${pad3(castingNum)}`;
     let attempts = 0;
     while (
@@ -123,9 +120,7 @@ for (let i = 1; i < 50; i++) {
     const updatedDaysAgo = Math.max(0, createdDaysAgo - 2);
     const statusChangedDaysAgo = Math.max(0, createdDaysAgo - 1);
     const message =
-      (i + j) % 2 === 0
-        ? messageVariants[(i + j) % messageVariants.length]
-        : undefined;
+      (i + j) % 2 === 0 ? messageVariants[(i + j) % messageVariants.length] : undefined;
 
     generated.push({
       id: `app_${talentIdx}_${j + 1}`,
@@ -135,8 +130,7 @@ for (let i = 1; i < 50; i++) {
       message,
       createdAt: daysAgo(createdDaysAgo),
       updatedAt: daysAgo(updatedDaysAgo),
-      statusUpdatedAt:
-        status !== "pending" ? daysAgo(statusChangedDaysAgo) : undefined,
+      statusUpdatedAt: status !== "pending" ? daysAgo(statusChangedDaysAgo) : undefined,
     });
   }
 }

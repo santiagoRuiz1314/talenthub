@@ -43,7 +43,11 @@ export function DetailAdditionalInfo({ casting }: Props) {
   const items: InfoItem[] = [];
 
   if (casting.location) {
-    items.push({ label: CASTING_DETAIL_COPY.additionalLocation, value: casting.location, featured: true });
+    items.push({
+      label: CASTING_DETAIL_COPY.additionalLocation,
+      value: casting.location,
+      featured: true,
+    });
   }
 
   items.push({
@@ -61,13 +65,14 @@ export function DetailAdditionalInfo({ casting }: Props) {
   }
 
   return (
-    <DetailSection title={CASTING_DETAIL_COPY.additionalInfoTitle} kicker={CASTING_DETAIL_COPY.additionalInfoKicker}>
+    <DetailSection
+      title={CASTING_DETAIL_COPY.additionalInfoTitle}
+      kicker={CASTING_DETAIL_COPY.additionalInfoKicker}
+    >
       <div
         className={cn(
           "grid max-w-[760px] gap-4",
-          items.length === 3
-            ? "grid-cols-1 sm:grid-cols-3"
-            : "grid-cols-1 sm:grid-cols-2",
+          items.length === 3 ? "grid-cols-1 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2",
         )}
       >
         {items.map((item) => (
@@ -78,20 +83,18 @@ export function DetailAdditionalInfo({ casting }: Props) {
               item.featured ? "bg-beige-soft" : "bg-bg",
             )}
           >
-            <span className="text-ink-muted text-[11px] font-medium uppercase tracking-[0.08em]">
+            <span className="text-ink-muted text-[11px] font-medium tracking-[0.08em] uppercase">
               {item.label}
             </span>
             <span
               className={cn(
-                "font-display text-[22px] font-medium leading-[1.15] tracking-[-0.02em]",
+                "font-display text-[22px] leading-[1.15] font-medium tracking-[-0.02em]",
                 item.tbd ? "text-ink-muted italic" : "text-ink",
               )}
             >
               {item.value}
             </span>
-            {item.note && (
-              <span className="text-ink-muted text-[12.5px]">{item.note}</span>
-            )}
+            {item.note && <span className="text-ink-muted text-[12.5px]">{item.note}</span>}
           </div>
         ))}
       </div>

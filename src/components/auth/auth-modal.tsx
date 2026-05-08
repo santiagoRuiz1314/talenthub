@@ -36,11 +36,7 @@ const ROLE_OPTIONS: { id: Role; label: string; sub: string }[] = [
   { id: "agency", label: "Soy agencia", sub: "Publico castings" },
 ];
 
-export function AuthModal({
-  mode,
-  initialRole = "talent",
-  onClose,
-}: AuthModalProps) {
+export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalProps) {
   const [activeRole, setActiveRole] = useState<Role>(initialRole);
 
   const copy = ROLE_COPY[activeRole];
@@ -117,7 +113,7 @@ export function AuthModal({
       {/* Heading + subtítulo */}
       <h2
         id="auth-heading"
-        className="font-display mb-2 text-[28px] font-medium leading-[1.1] tracking-[-0.025em]"
+        className="font-display mb-2 text-[28px] leading-[1.1] font-medium tracking-[-0.025em]"
       >
         {copy.heading}
         <span className="text-coral">.</span>
@@ -136,21 +132,19 @@ export function AuthModal({
               className={cn(
                 "flex flex-col gap-0.5 rounded-lg px-3 py-2.5 text-left transition-all duration-150",
                 active
-                  ? "bg-bg border-border shadow-[0_1px_2px_rgba(10,10,10,0.04)] border"
+                  ? "bg-bg border-border border shadow-[0_1px_2px_rgba(10,10,10,0.04)]"
                   : "border border-transparent",
               )}
             >
               <span
                 className={cn(
-                  "text-[13px] font-medium leading-none",
+                  "text-[13px] leading-none font-medium",
                   active ? "text-ink" : "text-ink-muted",
                 )}
               >
                 {opt.label}
               </span>
-              <span className="text-ink-muted text-[11px] leading-none mt-0.5">
-                {opt.sub}
-              </span>
+              <span className="text-ink-muted mt-0.5 text-[11px] leading-none">{opt.sub}</span>
             </button>
           );
         })}
@@ -160,7 +154,7 @@ export function AuthModal({
       <button
         type="button"
         onClick={handleGoogleClick}
-        className="bg-ink text-bg hover:bg-[#222] mb-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[10px] py-3 text-[14px] font-medium transition-colors duration-150"
+        className="bg-ink text-bg mb-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[10px] py-3 text-[14px] font-medium transition-colors duration-150 hover:bg-[#222]"
       >
         <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] bg-white">
           <GoogleIcon size={14} />
@@ -171,9 +165,7 @@ export function AuthModal({
       {/* Divider */}
       <div className="mb-4 flex items-center gap-3">
         <div className="bg-border h-px flex-1" />
-        <span className="text-ink-muted text-[12px] font-medium tracking-[0.1em] uppercase">
-          o
-        </span>
+        <span className="text-ink-muted text-[12px] font-medium tracking-[0.1em] uppercase">o</span>
         <div className="bg-border h-px flex-1" />
       </div>
 
@@ -213,7 +205,7 @@ export function AuthModal({
           className={cn(
             "flex w-full items-center justify-center gap-1.5 rounded-[10px] py-3 text-[14px] font-medium transition-colors duration-150",
             isValid && !isSubmitting
-              ? "bg-coral text-white hover:bg-coral-deep cursor-pointer"
+              ? "bg-coral hover:bg-coral-deep cursor-pointer text-white"
               : "bg-beige text-ink-muted cursor-not-allowed",
           )}
         >
@@ -253,11 +245,13 @@ export function AuthModal({
       <div
         onClick={onClose}
         className="animate-th-fade-in fixed inset-0 z-50 flex items-center justify-center px-5"
-        style={{
-          background: "rgba(10, 10, 10, 0.45)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-        } as React.CSSProperties}
+        style={
+          {
+            background: "rgba(10, 10, 10, 0.45)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+          } as React.CSSProperties
+        }
       >
         {box}
       </div>

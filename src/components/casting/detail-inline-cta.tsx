@@ -17,9 +17,7 @@ export function DetailInlineCta({ applied, onApply }: Props) {
         <div className="font-display mb-1 text-[18px] font-medium tracking-[-0.015em]">
           {CASTING_DETAIL_COPY.ctaHeading}
         </div>
-        <div className="text-[13px] opacity-65">
-          {CASTING_DETAIL_COPY.ctaBody}
-        </div>
+        <div className="text-[13px] opacity-65">{CASTING_DETAIL_COPY.ctaBody}</div>
       </div>
       <button
         type="button"

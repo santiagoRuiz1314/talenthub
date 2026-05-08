@@ -62,7 +62,7 @@ export function Footer({ variant = "full" }: Props) {
           {/* Nav cols */}
           {NAV_COLS.map((col) => (
             <div key={col.label} className="flex flex-col gap-3">
-              <span className="text-ink text-[12px] font-semibold uppercase tracking-[0.06em]">
+              <span className="text-ink text-[12px] font-semibold tracking-[0.06em] uppercase">
                 {col.label}
               </span>
               <ul className="flex flex-col gap-2">

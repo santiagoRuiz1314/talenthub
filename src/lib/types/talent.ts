@@ -1,23 +1,8 @@
-import type {
-  AgeRange,
-  City,
-  Gender,
-  ISODateString,
-  Language,
-  URLString,
-  UUID,
-} from "./shared";
+import type { AgeRange, City, Gender, ISODateString, Language, URLString, UUID } from "./shared";
 
 export type EyeColor = "brown" | "black" | "hazel" | "green" | "blue" | "gray";
 
-export type HairColor =
-  | "black"
-  | "brown"
-  | "blonde"
-  | "red"
-  | "gray"
-  | "white"
-  | "other";
+export type HairColor = "black" | "brown" | "blonde" | "red" | "gray" | "white" | "other";
 
 /** Medidas en cm. Todas opcionales — no todos los talentos las completan. */
 export type TalentMeasurements = {

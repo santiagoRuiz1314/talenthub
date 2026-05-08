@@ -1,7 +1,4 @@
-import {
-  applicationInputSchema,
-  applicationUpdateSchema,
-} from "@/lib/schemas/application";
+import { applicationInputSchema, applicationUpdateSchema } from "@/lib/schemas/application";
 import type {
   Application,
   ApplicationInput,
@@ -17,9 +14,7 @@ import { mockTalents } from "@/mocks/talents";
 import { simulateLatency } from "./_latency";
 
 /** Aplicaciones del talento, hidratadas con su `casting`. Lo consume `/applications`. */
-export async function getApplications(
-  talentId: UUID,
-): Promise<ApplicationWithCasting[]> {
+export async function getApplications(talentId: UUID): Promise<ApplicationWithCasting[]> {
   await simulateLatency();
   const result: ApplicationWithCasting[] = [];
   for (const a of mockApplications) {
@@ -31,9 +26,7 @@ export async function getApplications(
 }
 
 /** Aplicaciones de un casting, hidratadas con su `talent`. Lo consume `/agency/.../applicants`. */
-export async function getApplicationsByCasting(
-  castingId: UUID,
-): Promise<ApplicationWithTalent[]> {
+export async function getApplicationsByCasting(castingId: UUID): Promise<ApplicationWithTalent[]> {
   await simulateLatency();
   const result: ApplicationWithTalent[] = [];
   for (const a of mockApplications) {
@@ -54,9 +47,7 @@ export async function getApplicationsByCasting(
  * ese flujo es toast-only (ver AGENTS.md).
  * Usarla solo para simular creación real en tests/dev tools.
  */
-export async function createApplication(
-  input: ApplicationInput,
-): Promise<Application> {
+export async function createApplication(input: ApplicationInput): Promise<Application> {
   const parsed = applicationInputSchema.parse(input);
   await simulateLatency();
   const duplicate = mockApplications.find(

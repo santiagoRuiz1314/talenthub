@@ -5,21 +5,14 @@ import { CastingGrid } from "@/components/casting/casting-grid";
 import { FilterBar } from "@/components/casting/filter-bar";
 import { RecommendedRow } from "@/components/casting/recommended-row";
 import { CASTING_CATEGORY_LABELS, CITY_LABELS } from "@/lib/constants";
-import {
-  getCastingsWithAgency,
-  getRecommendedCastingsWithAgency,
-} from "@/lib/data/castings";
+import { getCastingsWithAgency, getRecommendedCastingsWithAgency } from "@/lib/data/castings";
 import type { CastingCategory, City } from "@/lib/types";
 
 type SearchParams = { [key: string]: string | string[] | undefined };
 
 const RECOMMENDED_FOR_TALENT_ID = "t_001";
 
-export default async function FeedPage({
-  searchParams,
-}: {
-  searchParams: Promise<SearchParams>;
-}) {
+export default async function FeedPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const params = await searchParams;
   const rawCategory = typeof params.category === "string" ? params.category : undefined;
   const rawCity = typeof params.city === "string" ? params.city : undefined;
@@ -29,9 +22,7 @@ export default async function FeedPage({
       ? (rawCategory as CastingCategory)
       : undefined;
   const city: City | undefined =
-    rawCity && Object.keys(CITY_LABELS).includes(rawCity)
-      ? (rawCity as City)
-      : undefined;
+    rawCity && Object.keys(CITY_LABELS).includes(rawCity) ? (rawCity as City) : undefined;
 
   // Suspense key fuerza re-suspensión cuando cambian los filtros — dispara el skeleton.
   const gridKey = `${category ?? "all"}-${city ?? "all"}`;
@@ -71,13 +62,7 @@ async function RecommendedSection({ talentId }: { talentId: string }) {
   return <RecommendedRow castings={castings} />;
 }
 
-async function CastingGridAsync({
-  category,
-  city,
-}: {
-  category?: CastingCategory;
-  city?: City;
-}) {
+async function CastingGridAsync({ category, city }: { category?: CastingCategory; city?: City }) {
   const castings = await getCastingsWithAgency({
     category,
     city,

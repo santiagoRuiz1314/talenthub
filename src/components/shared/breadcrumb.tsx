@@ -25,10 +25,7 @@ export function Breadcrumb({ items }: Props) {
               {item.label}
             </span>
           ) : (
-            <Link
-              href={item.href ?? "#"}
-              className="hover:text-ink transition-colors"
-            >
+            <Link href={item.href ?? "#"} className="hover:text-ink transition-colors">
               {item.label}
             </Link>
           )}

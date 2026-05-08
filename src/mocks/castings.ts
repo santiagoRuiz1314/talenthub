@@ -362,8 +362,7 @@ export const mockCastings: Casting[] = [
     id: "c_017",
     agencyId: "a_001",
     title: "Spot EPM — energía sostenible Manizales",
-    description:
-      "Spot regional para campaña de EPM en Eje Cafetero. Casting cerrado.",
+    description: "Spot regional para campaña de EPM en Eje Cafetero. Casting cerrado.",
     category: "commercial",
     status: "closed",
     city: "manizales",
@@ -525,8 +524,7 @@ export const mockCastings: Casting[] = [
     id: "c_025",
     agencyId: "a_005",
     title: "Largometraje Netflix LATAM — papel secundario",
-    description:
-      "Largometraje en post-producción. Casting cerrado por filmación finalizada.",
+    description: "Largometraje en post-producción. Casting cerrado por filmación finalizada.",
     category: "audiovisual",
     status: "closed",
     city: "cartagena",
@@ -545,8 +543,7 @@ export const mockCastings: Casting[] = [
     id: "c_026",
     agencyId: "a_004",
     title: "Spot Falabella — temporada navidad 2025",
-    description:
-      "Campaña navideña ya concluida. Casting cerrado.",
+    description: "Campaña navideña ya concluida. Casting cerrado.",
     category: "commercial",
     status: "closed",
     city: "bogota",
@@ -565,8 +562,7 @@ export const mockCastings: Casting[] = [
     id: "c_027",
     agencyId: "a_002",
     title: "Pasarela Colombiamoda 2026 — temporada invierno",
-    description:
-      "Pasarela de la colección invierno. Borrador del casting general para 14 modelos.",
+    description: "Pasarela de la colección invierno. Borrador del casting general para 14 modelos.",
     category: "runway",
     status: "draft",
     city: "medellin",
@@ -647,8 +643,7 @@ export const mockCastings: Casting[] = [
     id: "c_031",
     agencyId: "a_004",
     title: "Comercial Juan Valdez — campaña global Eje Cafetero",
-    description:
-      "Campaña global para mercado europeo. Casting cerrado por inicio de filmación.",
+    description: "Campaña global para mercado europeo. Casting cerrado por inicio de filmación.",
     category: "commercial",
     status: "closed",
     city: "pereira",

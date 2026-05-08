@@ -9,14 +9,7 @@ import {
   uuidSchema,
 } from "./shared";
 
-export const eyeColorSchema = z.enum([
-  "brown",
-  "black",
-  "hazel",
-  "green",
-  "blue",
-  "gray",
-]);
+export const eyeColorSchema = z.enum(["brown", "black", "hazel", "green", "blue", "gray"]);
 
 export const hairColorSchema = z.enum([
   "black",
@@ -52,11 +45,7 @@ export const socialLinksSchema = z.object({
 const experienceItemInputSchema = z.object({
   title: z.string().min(2).max(140),
   role: z.string().min(2).max(80).optional(),
-  year: z
-    .number()
-    .int()
-    .min(1980)
-    .max(new Date().getFullYear()),
+  year: z.number().int().min(1980).max(new Date().getFullYear()),
   description: z.string().max(500).optional(),
 });
 

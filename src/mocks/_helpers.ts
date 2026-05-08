@@ -20,11 +20,7 @@ export function daysFromNow(n: number): ISODateString {
  * Fecha calendario `YYYY-MM-DD` `years` años antes de NOW, con offsets opcionales
  * para diversificar día/mes entre talentos generados.
  */
-export function yearsAgoDate(
-  years: number,
-  monthOffset = 0,
-  dayOffset = 0,
-): ISODateString {
+export function yearsAgoDate(years: number, monthOffset = 0, dayOffset = 0): ISODateString {
   const d = new Date(NOW_MS);
   d.setUTCFullYear(d.getUTCFullYear() - years);
   if (monthOffset) d.setUTCMonth(d.getUTCMonth() + monthOffset);

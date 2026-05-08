@@ -20,7 +20,7 @@ export function CastingDetailSkeleton() {
       </div>
 
       {/* Header */}
-      <div className="grid grid-cols-1 gap-10 pb-8 pt-5 detail:grid-cols-[1.1fr_1fr]">
+      <div className="detail:grid-cols-[1.1fr_1fr] grid grid-cols-1 gap-10 pt-5 pb-8">
         <div className="flex flex-col justify-between gap-6">
           <div className="flex flex-col gap-5">
             {/* Badges */}

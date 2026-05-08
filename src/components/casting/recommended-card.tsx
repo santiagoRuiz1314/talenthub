@@ -30,10 +30,7 @@ export function RecommendedCard({ casting }: Props) {
             className="aspect-square h-full w-full rounded-md object-cover"
           />
         ) : (
-          <PhotoPlaceholder
-            seed={casting.id}
-            className="aspect-square h-full w-full rounded-md"
-          />
+          <PhotoPlaceholder seed={casting.id} className="aspect-square h-full w-full rounded-md" />
         )}
       </div>
       <div className="flex min-w-0 flex-col justify-between gap-2 px-3 py-3 pl-1">
@@ -46,18 +43,13 @@ export function RecommendedCard({ casting }: Props) {
           </h3>
           <div className="text-ink-muted mt-1.5 flex min-w-0 items-center gap-1.5 text-[12.5px]">
             <span className="truncate">{casting.agency.name}</span>
-            <span
-              aria-hidden
-              className="bg-ink-muted h-[2px] w-[2px] shrink-0 rounded-full"
-            />
+            <span aria-hidden className="bg-ink-muted h-[2px] w-[2px] shrink-0 rounded-full" />
             <span className="shrink-0">{CITY_LABELS[casting.city]}</span>
           </div>
         </div>
         <div className="text-ink-muted flex items-center gap-1.5 text-[12px]">
           <Calendar size={11} strokeWidth={1.5} />
-          <span className="tabular-nums">
-            Cierra {formatDeadline(casting.deadline)}
-          </span>
+          <span className="tabular-nums">Cierra {formatDeadline(casting.deadline)}</span>
         </div>
       </div>
     </article>

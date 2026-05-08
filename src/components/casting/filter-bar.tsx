@@ -8,10 +8,7 @@ import { CASTING_CATEGORY_LABELS, CITY_LABELS } from "@/lib/constants";
 import type { CastingCategory, City } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-const CATEGORY_ENTRIES = Object.entries(CASTING_CATEGORY_LABELS) as [
-  CastingCategory,
-  string,
-][];
+const CATEGORY_ENTRIES = Object.entries(CASTING_CATEGORY_LABELS) as [CastingCategory, string][];
 const CITY_ENTRIES = Object.entries(CITY_LABELS) as [City, string][];
 
 type Group = "category" | "city";
@@ -33,9 +30,7 @@ export function FilterBar() {
       ? (rawCategory as CastingCategory)
       : null;
   const selectedCity: City | null =
-    rawCity && Object.keys(CITY_LABELS).includes(rawCity)
-      ? (rawCity as City)
-      : null;
+    rawCity && Object.keys(CITY_LABELS).includes(rawCity) ? (rawCity as City) : null;
   const totalActive = (selectedCategory ? 1 : 0) + (selectedCity ? 1 : 0);
 
   const updateParam = (key: string, value: string | null) => {
@@ -62,14 +57,7 @@ export function FilterBar() {
       <div className="mx-auto w-full max-w-[1280px] px-5 py-3.5 sm:px-8">
         <div className="mb-3 flex flex-wrap items-center gap-1.5 lg:flex-nowrap lg:overflow-x-auto">
           {GROUPS.map((g) => {
-            const count =
-              g.key === "category"
-                ? selectedCategory
-                  ? 1
-                  : 0
-                : selectedCity
-                  ? 1
-                  : 0;
+            const count = g.key === "category" ? (selectedCategory ? 1 : 0) : selectedCity ? 1 : 0;
             const isOpen = openGroup === g.key;
             return (
               <button
@@ -112,9 +100,7 @@ export function FilterBar() {
                   key={value}
                   label={label}
                   active={active}
-                  onClick={() =>
-                    updateParam("category", active ? null : value)
-                  }
+                  onClick={() => updateParam("category", active ? null : value)}
                 />
               );
             })}

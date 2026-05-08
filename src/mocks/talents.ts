@@ -82,24 +82,12 @@ const BIO_TEMPLATES_BY_CITY: Record<string, readonly string[]> = {
     "Modelo santandereano con disponibilidad para campañas comerciales nacionales.",
     "Talento de Bucaramanga enfocado en publicidad y comercial regional.",
   ],
-  pereira: [
-    "Talento pereirano disponible para producciones audiovisuales y campañas regionales.",
-  ],
-  manizales: [
-    "Modelo manizaleño con experiencia en comerciales y editoriales.",
-  ],
-  santa_marta: [
-    "Talento samario con experiencia en producciones costeras del Caribe colombiano.",
-  ],
-  cucuta: [
-    "Modelo cucuteño disponible para campañas regionales y nacionales.",
-  ],
-  ibague: [
-    "Talento tolimense disponible para producciones audiovisuales y publicitarias.",
-  ],
-  pasto: [
-    "Modelo nariñense con experiencia en producciones del sur del país.",
-  ],
+  pereira: ["Talento pereirano disponible para producciones audiovisuales y campañas regionales."],
+  manizales: ["Modelo manizaleño con experiencia en comerciales y editoriales."],
+  santa_marta: ["Talento samario con experiencia en producciones costeras del Caribe colombiano."],
+  cucuta: ["Modelo cucuteño disponible para campañas regionales y nacionales."],
+  ibague: ["Talento tolimense disponible para producciones audiovisuales y publicitarias."],
+  pasto: ["Modelo nariñense con experiencia en producciones del sur del país."],
 };
 
 function buildLanguages(i: number): Language[] {
@@ -111,10 +99,7 @@ function buildLanguages(i: number): Language[] {
   return langs;
 }
 
-function buildPhysicalData(
-  i: number,
-  seed: { gender: Gender; heightCm: number },
-): PhysicalData {
+function buildPhysicalData(i: number, seed: { gender: Gender; heightCm: number }): PhysicalData {
   const eyeColor = pick(EYE_COLORS, i + 2);
   const hairColor = pick(HAIR_COLORS, i + 1);
   const shoeSizeEu = seed.gender === "female" ? 36 + (i % 6) : 41 + (i % 5);
@@ -153,11 +138,7 @@ function buildGallery(i: number, talentIdx: string): GalleryPhoto[] {
   }));
 }
 
-function buildPortfolio(
-  i: number,
-  talentIdx: string,
-  slug: string,
-): Portfolio | undefined {
+function buildPortfolio(i: number, talentIdx: string, slug: string): Portfolio | undefined {
   // ~33% sin portfolio aún (son perfiles que no terminaron onboarding paso PDF).
   if (i % 3 === 2) return undefined;
   const handle = slug.replace(/\./g, "_");

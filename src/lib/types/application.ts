@@ -2,11 +2,7 @@ import type { Casting } from "./casting";
 import type { ISODateString, UUID } from "./shared";
 import type { Talent } from "./talent";
 
-export type ApplicationStatus =
-  | "pending"
-  | "viewed"
-  | "pre_selected"
-  | "rejected";
+export type ApplicationStatus = "pending" | "viewed" | "pre_selected" | "rejected";
 
 export type Application = {
   id: UUID;
@@ -27,10 +23,7 @@ export type ApplicationWithCasting = Application & { casting: Casting };
 export type ApplicationWithTalent = Application & { talent: Talent };
 
 /** Aplicar a un casting. `status` arranca en `"pending"`. */
-export type ApplicationInput = Pick<
-  Application,
-  "castingId" | "talentId" | "message"
->;
+export type ApplicationInput = Pick<Application, "castingId" | "talentId" | "message">;
 
 /** Solo la agencia cambia `status`. */
 export type ApplicationUpdate = Pick<Application, "status">;

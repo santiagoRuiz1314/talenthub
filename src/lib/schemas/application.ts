@@ -2,12 +2,7 @@ import { z } from "zod";
 
 import { uuidSchema } from "./shared";
 
-export const applicationStatusSchema = z.enum([
-  "pending",
-  "viewed",
-  "pre_selected",
-  "rejected",
-]);
+export const applicationStatusSchema = z.enum(["pending", "viewed", "pre_selected", "rejected"]);
 
 export const applicationInputSchema = z.object({
   castingId: uuidSchema,

@@ -78,10 +78,7 @@ export const AGENCY_TYPE_LABELS: Record<AgencyType, string> = {
   other: "Otro",
 };
 
-export const AGENCY_VERIFICATION_STATUS_LABELS: Record<
-  AgencyVerificationStatus,
-  string
-> = {
+export const AGENCY_VERIFICATION_STATUS_LABELS: Record<AgencyVerificationStatus, string> = {
   pending: "Pendiente",
   verified: "Verificada",
   rejected: "Rechazada",

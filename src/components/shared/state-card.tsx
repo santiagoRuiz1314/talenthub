@@ -57,23 +57,12 @@ const VARIANT_ICON: Record<Variant, ReactNode> = {
   success: <CircleCheck size={22} strokeWidth={1.5} />,
 };
 
-export function StateCard({
-  variant,
-  title,
-  body,
-  icon,
-  cta,
-  className,
-}: Props) {
+export function StateCard({ variant, title, body, icon, cta, className }: Props) {
   if (variant === "loading") {
     return (
       <div
         aria-hidden
-        className={cn(
-          "rounded-xl border px-8 py-10",
-          VARIANT_BORDER.loading,
-          className,
-        )}
+        className={cn("rounded-xl border px-8 py-10", VARIANT_BORDER.loading, className)}
       >
         <div className="space-y-3">
           <div className={cn("h-5 w-1/3 rounded", SHIMMER)} />
@@ -112,9 +101,7 @@ export function StateCard({
           {resolvedTitle}
         </h3>
         {resolvedBody && (
-          <p className="text-ink-muted text-[14.5px] leading-relaxed text-pretty">
-            {resolvedBody}
-          </p>
+          <p className="text-ink-muted text-[14.5px] leading-relaxed text-pretty">{resolvedBody}</p>
         )}
       </div>
       {cta && <div className="pt-2">{cta}</div>}

@@ -18,20 +18,14 @@ export function RecommendedRow({ castings }: Props) {
             <span>
               Recomendados para ti<span className="text-coral">.</span>
             </span>
-            <span
-              aria-hidden
-              className="text-coral animate-th-pulse-soft inline-flex shrink-0"
-            >
+            <span aria-hidden className="text-coral animate-th-pulse-soft inline-flex shrink-0">
               <Sparkle size={28} strokeWidth={1.5} />
             </span>
           </h1>
         </div>
-        <div className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 sm:-mx-8 sm:px-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] sm:-mx-8 sm:px-8 [&::-webkit-scrollbar]:hidden">
           {items.map((casting) => (
-            <div
-              key={casting.id}
-              className="w-[360px] max-w-[88vw] shrink-0 snap-start"
-            >
+            <div key={casting.id} className="w-[360px] max-w-[88vw] shrink-0 snap-start">
               <RecommendedCard casting={casting} />
             </div>
           ))}

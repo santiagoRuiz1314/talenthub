@@ -33,10 +33,7 @@ export function CastingCard({ casting }: Props) {
             className="aspect-[4/5] w-full rounded-lg object-cover"
           />
         ) : (
-          <PhotoPlaceholder
-            seed={casting.id}
-            className="aspect-[4/5] w-full rounded-lg"
-          />
+          <PhotoPlaceholder seed={casting.id} className="aspect-[4/5] w-full rounded-lg" />
         )}
         <div className="absolute top-[18px] left-[18px] z-20">
           <TypeTag category={casting.category} />
@@ -66,9 +63,7 @@ export function CastingCard({ casting }: Props) {
         <div className="border-border text-ink-muted mt-auto flex items-center justify-between gap-2 border-t pt-2.5 text-[12.5px]">
           <span className="inline-flex items-center gap-1.5">
             <Calendar size={12} strokeWidth={1.5} />
-            <span className="tabular-nums">
-              Cierra {formatDeadline(casting.deadline)}
-            </span>
+            <span className="tabular-nums">Cierra {formatDeadline(casting.deadline)}</span>
           </span>
           {isVerified && (
             <span className="text-coral-deep inline-flex items-center gap-1 text-[11px] font-medium">

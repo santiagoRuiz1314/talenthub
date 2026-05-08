@@ -1,7 +1,4 @@
-import {
-  castingInputSchema,
-  castingUpdateSchema,
-} from "@/lib/schemas/casting";
+import { castingInputSchema, castingUpdateSchema } from "@/lib/schemas/casting";
 import type { Agency } from "@/lib/types/agency";
 import type {
   Casting,
@@ -32,10 +29,7 @@ export async function getCastings(filters?: CastingFilters): Promise<Casting[]> 
     .filter((c) => (city ? c.city === city : true))
     .filter((c) => (status ? c.status === status : true))
     .filter((c) =>
-      q
-        ? c.title.toLowerCase().includes(q) ||
-          c.description.toLowerCase().includes(q)
-        : true,
+      q ? c.title.toLowerCase().includes(q) || c.description.toLowerCase().includes(q) : true,
     )
     .slice()
     .sort((a, b) => {
@@ -73,9 +67,7 @@ export async function createCasting(input: CastingInput): Promise<Casting> {
     city: parsed.city,
     location: parsed.location,
     requirements: parsed.requirements,
-    photos: parsed.photos.map(
-      (p): CastingPhoto => ({ ...p, id: crypto.randomUUID() }),
-    ),
+    photos: parsed.photos.map((p): CastingPhoto => ({ ...p, id: crypto.randomUUID() })),
     deadline: parsed.deadline,
     shootDate: parsed.shootDate,
     publishedAt: parsed.status === "active" ? now : undefined,
@@ -91,10 +83,7 @@ export async function createCasting(input: CastingInput): Promise<Casting> {
  * Si pasa de `draft`/`closed` → `active` y no tenía `publishedAt`, lo setea ahora.
  * Lanza si el casting no existe.
  */
-export async function updateCasting(
-  id: UUID,
-  input: CastingUpdate,
-): Promise<Casting> {
+export async function updateCasting(id: UUID, input: CastingUpdate): Promise<Casting> {
   const parsed = castingUpdateSchema.parse(input);
   await simulateLatency();
   const idx = mockCastings.findIndex((c) => c.id === id);
@@ -104,9 +93,7 @@ export async function updateCasting(
   const existing = mockCastings[idx];
   const now = new Date().toISOString();
   const photos = parsed.photos
-    ? parsed.photos.map(
-        (p): CastingPhoto => ({ ...p, id: crypto.randomUUID() }),
-      )
+    ? parsed.photos.map((p): CastingPhoto => ({ ...p, id: crypto.randomUUID() }))
     : existing.photos;
   const updated: Casting = {
     ...existing,
@@ -114,11 +101,7 @@ export async function updateCasting(
     photos,
     updatedAt: now,
   };
-  if (
-    parsed.status === "active" &&
-    existing.status !== "active" &&
-    !existing.publishedAt
-  ) {
+  if (parsed.status === "active" && existing.status !== "active" && !existing.publishedAt) {
     updated.publishedAt = now;
   }
   mockCastings[idx] = updated;
@@ -135,15 +118,11 @@ export async function getCastingsByAgency(agencyId: UUID): Promise<Casting[]> {
  * Recomendados para un talento. Fase 4 reemplaza esto con embeddings + matching IA.
  * Implementación naïve Fase 2: castings activos en la misma ciudad del talento, top 6.
  */
-export async function getRecommendedCastings(
-  talentId: UUID,
-): Promise<Casting[]> {
+export async function getRecommendedCastings(talentId: UUID): Promise<Casting[]> {
   await simulateLatency();
   const talent = mockTalents.find((t) => t.id === talentId);
   if (!talent) return [];
-  return mockCastings
-    .filter((c) => c.status === "active" && c.city === talent.city)
-    .slice(0, 6);
+  return mockCastings.filter((c) => c.status === "active" && c.city === talent.city).slice(0, 6);
 }
 
 /**
@@ -152,9 +131,7 @@ export async function getRecommendedCastings(
  * consumen para evitar un fetch separado de agencia.
  * Devuelve `null` si el casting no existe o si su agencia no existe.
  */
-export async function getCastingWithAgency(
-  id: UUID,
-): Promise<CastingWithAgency | null> {
+export async function getCastingWithAgency(id: UUID): Promise<CastingWithAgency | null> {
   const casting = await getCasting(id);
   if (!casting) return null;
   const agency = await getAgency(casting.agencyId);
@@ -211,9 +188,7 @@ export async function getRecommendedCastingsWithAgency(
   return result;
 }
 
-function pickPublicAgency(
-  agency: Agency,
-): CastingWithAgency["agency"] {
+function pickPublicAgency(agency: Agency): CastingWithAgency["agency"] {
   return {
     id: agency.id,
     name: agency.name,

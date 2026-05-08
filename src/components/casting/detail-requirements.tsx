@@ -82,7 +82,10 @@ export function DetailRequirements({ requirements }: Props) {
   if (items.length === 0) return null;
 
   return (
-    <DetailSection title={CASTING_DETAIL_COPY.requirementsTitle} kicker={CASTING_DETAIL_COPY.requirementsKicker}>
+    <DetailSection
+      title={CASTING_DETAIL_COPY.requirementsTitle}
+      kicker={CASTING_DETAIL_COPY.requirementsKicker}
+    >
       <div className="grid max-w-[760px] grid-cols-1 gap-3 sm:grid-cols-2">
         {items.map((item) => (
           <div
@@ -93,7 +96,7 @@ export function DetailRequirements({ requirements }: Props) {
               {item.icon}
             </div>
             <div className="flex min-w-0 flex-col gap-0.5">
-              <span className="text-ink-muted text-[11px] font-medium uppercase tracking-[0.06em]">
+              <span className="text-ink-muted text-[11px] font-medium tracking-[0.06em] uppercase">
                 {item.label}
               </span>
               <span className="font-display text-ink truncate text-[14.5px] font-medium tracking-[-0.01em]">

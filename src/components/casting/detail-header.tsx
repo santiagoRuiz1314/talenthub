@@ -2,11 +2,7 @@ import { Bookmark, Calendar, Clock, MapPin } from "lucide-react";
 
 import { PhotoPlaceholder } from "@/components/shared/photo-placeholder";
 import { VerifiedBadge } from "@/components/shared/verified-badge";
-import {
-  CASTING_CATEGORY_LABELS,
-  CASTING_DETAIL_COPY,
-  CITY_LABELS,
-} from "@/lib/constants";
+import { CASTING_CATEGORY_LABELS, CASTING_DETAIL_COPY, CITY_LABELS } from "@/lib/constants";
 import type { CastingWithAgency } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -64,13 +60,8 @@ type MetaCellProps = {
 
 function MetaCell({ label, value, icon, divider, highlight }: MetaCellProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-1.5 px-5 py-4",
-        divider && "border-border border-l",
-      )}
-    >
-      <div className="text-ink-muted flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.08em]">
+    <div className={cn("flex flex-col gap-1.5 px-5 py-4", divider && "border-border border-l")}>
+      <div className="text-ink-muted flex items-center gap-1.5 text-[11px] font-medium tracking-[0.08em] uppercase">
         {icon}
         {label}
       </div>
@@ -96,9 +87,9 @@ export function DetailHeader({ casting }: Props) {
   const firstPhoto = casting.photos?.[0];
 
   return (
-    <section className="pb-8 pt-5">
+    <section className="pt-5 pb-8">
       {/* 2-col layout — colapsa a 1-col bajo breakpoint `detail` (960px) */}
-      <div className="grid grid-cols-1 items-start gap-10 detail:grid-cols-[1.1fr_1fr]">
+      <div className="detail:grid-cols-[1.1fr_1fr] grid grid-cols-1 items-start gap-10">
         {/* Left: texto */}
         <div className="flex flex-col justify-between gap-6">
           <div>
@@ -143,8 +134,7 @@ export function DetailHeader({ casting }: Props) {
                 <div
                   className="border-border font-display text-ink flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border text-[13px] font-semibold"
                   style={{
-                    background:
-                      "linear-gradient(135deg, oklch(0.78 0.04 32), oklch(0.86 0.03 22))",
+                    background: "linear-gradient(135deg, oklch(0.78 0.04 32), oklch(0.86 0.03 22))",
                   }}
                   aria-hidden
                 >
@@ -153,9 +143,7 @@ export function DetailHeader({ casting }: Props) {
               )}
               <div className="flex flex-col gap-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-ink text-[14px] font-medium">
-                    {casting.agency.name}
-                  </span>
+                  <span className="text-ink text-[14px] font-medium">{casting.agency.name}</span>
                   {isVerified && <VerifiedBadge />}
                 </div>
                 <span className="text-ink-muted text-[12.5px]">
@@ -205,10 +193,7 @@ export function DetailHeader({ casting }: Props) {
               className="aspect-[4/5] w-full rounded-2xl object-cover"
             />
           ) : (
-            <PhotoPlaceholder
-              seed={casting.id}
-              className="aspect-[4/5] w-full rounded-2xl"
-            />
+            <PhotoPlaceholder seed={casting.id} className="aspect-[4/5] w-full rounded-2xl" />
           )}
           <button
             type="button"

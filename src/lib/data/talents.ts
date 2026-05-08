@@ -36,10 +36,7 @@ export async function getTalent(id: UUID): Promise<Talent | null> {
  * `experience` y `gallery` reciben items sin id; el storage genera ids nuevos.
  * Lanza si el talent no existe.
  */
-export async function updateTalent(
-  id: UUID,
-  input: TalentUpdate,
-): Promise<Talent> {
+export async function updateTalent(id: UUID, input: TalentUpdate): Promise<Talent> {
   const parsed = talentUpdateSchema.parse(input);
   await simulateLatency();
   const idx = mockTalents.findIndex((t) => t.id === id);
@@ -48,14 +45,10 @@ export async function updateTalent(
   }
   const existing = mockTalents[idx];
   const experience = parsed.experience
-    ? parsed.experience.map(
-        (e): ExperienceItem => ({ ...e, id: crypto.randomUUID() }),
-      )
+    ? parsed.experience.map((e): ExperienceItem => ({ ...e, id: crypto.randomUUID() }))
     : existing.experience;
   const gallery = parsed.gallery
-    ? parsed.gallery.map(
-        (g): GalleryPhoto => ({ ...g, id: crypto.randomUUID() }),
-      )
+    ? parsed.gallery.map((g): GalleryPhoto => ({ ...g, id: crypto.randomUUID() }))
     : existing.gallery;
   const updated: Talent = {
     ...existing,
@@ -73,9 +66,7 @@ export async function updateTalent(
  * Fase 4 reemplaza con embeddings + matching IA. `search` matchea contra
  * `firstName lastName` (case-insensitive).
  */
-export async function searchTalents(
-  filters?: TalentFilters,
-): Promise<Talent[]> {
+export async function searchTalents(filters?: TalentFilters): Promise<Talent[]> {
   await simulateLatency();
   const { ageRange, city, gender, search } = filters ?? {};
   const q = search?.toLowerCase();

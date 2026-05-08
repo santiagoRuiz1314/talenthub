@@ -2,12 +2,7 @@ import type { UUID } from "@/lib/types/shared";
 import type { User } from "@/lib/types/user";
 
 import { daysAgo, pad3, photoUrl } from "./_helpers";
-import {
-  AGENCY_EMAIL_DOMAINS,
-  AGENCY_OWNER_SEEDS,
-  TALENT_SEEDS,
-  emailSlug,
-} from "./_seeds";
+import { AGENCY_EMAIL_DOMAINS, AGENCY_OWNER_SEEDS, TALENT_SEEDS, emailSlug } from "./_seeds";
 
 const talentUsers: User[] = TALENT_SEEDS.map((seed, i) => {
   const idx = pad3(i + 1);

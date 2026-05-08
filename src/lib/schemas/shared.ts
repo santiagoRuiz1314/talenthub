@@ -1,11 +1,9 @@
 import { z } from "zod";
 
 /** ISO 8601 (`YYYY-MM-DD` o timestamp completo). */
-export const isoDateStringSchema = z
-  .string()
-  .refine((v) => !Number.isNaN(Date.parse(v)), {
-    message: "Fecha inválida (ISO 8601)",
-  });
+export const isoDateStringSchema = z.string().refine((v) => !Number.isNaN(Date.parse(v)), {
+  message: "Fecha inválida (ISO 8601)",
+});
 
 /** UUID en Fase 3+; en Fase 2 cualquier string no vacío es válido (mocks usan ids como `c_001`). */
 export const uuidSchema = z.string().min(1, "UUID requerido");
@@ -29,13 +27,7 @@ export const citySchema = z.enum([
 
 export const genderSchema = z.enum(["female", "male", "non_binary", "other"]);
 
-export const genderRequirementSchema = z.enum([
-  "female",
-  "male",
-  "non_binary",
-  "other",
-  "any",
-]);
+export const genderRequirementSchema = z.enum(["female", "male", "non_binary", "other", "any"]);
 
 export const ageRangeSchema = z
   .object({
@@ -59,12 +51,7 @@ export const heightRangeSchema = z
 
 export const languageCodeSchema = z.enum(["es", "en", "pt", "fr", "it", "de"]);
 
-export const languageLevelSchema = z.enum([
-  "basic",
-  "intermediate",
-  "advanced",
-  "native",
-]);
+export const languageLevelSchema = z.enum(["basic", "intermediate", "advanced", "native"]);
 
 export const languageSchema = z.object({
   code: languageCodeSchema,

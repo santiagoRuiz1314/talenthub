@@ -36,9 +36,7 @@ export function TopNav({ variant }: Props) {
                 href={l.href}
                 className={cn(
                   "rounded-md px-2.5 py-1.5 text-[13.5px] transition-colors",
-                  l.active
-                    ? "text-ink font-medium"
-                    : "text-ink-muted hover:text-ink",
+                  l.active ? "text-ink font-medium" : "text-ink-muted hover:text-ink",
                 )}
               >
                 {l.label}

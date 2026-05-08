@@ -32,9 +32,7 @@ export function Logo({ variant = "default", className, href = "/" }: Props) {
       )}
     >
       {mark}
-      <span className="font-display text-[17px] font-semibold tracking-[-0.02em]">
-        TalentHub
-      </span>
+      <span className="font-display text-[17px] font-semibold tracking-[-0.02em]">TalentHub</span>
       {variant === "agency" && (
         <span className="bg-coral-soft text-coral-deep ml-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold tracking-[0.04em] uppercase">
           Agencias
