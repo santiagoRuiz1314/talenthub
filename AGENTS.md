@@ -67,7 +67,8 @@
   - Pantalla 2 — detalle casting (`/castings/[id]`): completed (commit 27bf55f).
   - Pantalla 3 — login (`/login`): completed (commit f3f3fdc).
   - Bloque G — post-auditoría pantalla 3: completed (commit 0adb08f). AuthModal mode=modal usa DialogPrimitive de base-nova; parseAuthRoleParam en utils.ts; LoginPage async con searchParams.
-- Current next step: implement screen 4 — Registro talento (`/register/talent`).
+  - Pantalla 4 — registro talento (`/register/talent`): completed (commit 05aa20d). REGISTER_COPY, toggle oculto, pageVariant cross-links.
+- Current next step: implement screen 5 — Onboarding paso 1 (`/onboarding`).
 - Phases are strictly sequential:
   - Fase 0: design diagnosis.
   - Fase 1: project foundations.
@@ -85,8 +86,8 @@
   - `/` ✅
   - `/castings/[id]` ✅
   - `/login` ✅
-  - `/register/talent` ←
-  - `/onboarding`
+  - `/register/talent` ✅
+  - `/onboarding` ←
   - `/onboarding/completar`
   - `/profile`
   - `/applications`
