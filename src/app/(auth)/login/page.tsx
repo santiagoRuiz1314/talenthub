@@ -14,5 +14,5 @@ type Props = {
 export default async function LoginPage({ searchParams }: Props) {
   const params = await searchParams;
   const initialRole = parseAuthRoleParam(params.role);
-  return <AuthModal mode="page" initialRole={initialRole} />;
+  return <AuthModal mode="page" initialRole={initialRole} pageVariant="login" />;
 }

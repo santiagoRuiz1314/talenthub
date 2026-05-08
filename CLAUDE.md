@@ -40,8 +40,12 @@ Pantallas completadas:
         · AuthModal: Dialog base-nova en mode=modal (ESC/backdrop/focus-trap nativos)
         · AuthModal: disabled/aria-busy durante submit, aria-pressed en toggle,
           focus-visible ring, rounded-[16px], hover:bg-ink/90, footer solo en modal
+  [x] Pantalla 4  — registro talento (/register/talent)
+        · page.tsx idéntico a /login pero con initialRole="talent" fijo
+        · AuthModal: nuevo prop pageVariant="login"|"register" — cross-link contextual
+          en mode=page (register → "Inicia sesión", login → "Regístrate")
 
-Próximo paso: Pantalla 4 — Registro talento (/register/talent)
+Próximo paso: Pantalla 5 — Onboarding paso 1 (/onboarding)
 Bloqueadores: Ninguno
 ```
 
@@ -398,7 +402,7 @@ return (
 1. **Feed público de castings** — `/` ✅
 2. **Detalle de un casting** — `/castings/[id]` ✅
 3. **Login** — `/login` ✅
-4. **Registro talento** — `/register/talent`
+4. **Registro talento** — `/register/talent` ✅
 5. **Onboarding talento paso 1 (subir PDF)** — `/onboarding`
 6. **Onboarding talento paso 2 (completar perfil)** — `/onboarding/completar`
 7. **Perfil talento** — `/profile`

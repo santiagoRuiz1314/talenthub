@@ -18,6 +18,8 @@ type Role = "talent" | "agency";
 export type AuthModalProps = {
   mode: "modal" | "page";
   initialRole?: Role;
+  /** Solo en mode=page: controla el cross-link inferior (login ↔ registro). */
+  pageVariant?: "login" | "register";
   onClose?: () => void;
 };
 
@@ -37,7 +39,7 @@ const ROLE_OPTIONS: { id: Role; label: string; sub: string }[] = [
   { id: "agency", label: "Soy agencia", sub: "Publico castings" },
 ];
 
-export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalProps) {
+export function AuthModal({ mode, initialRole = "talent", pageVariant, onClose }: AuthModalProps) {
   const [activeRole, setActiveRole] = useState<Role>(initialRole);
 
   const copy = ROLE_COPY[activeRole];
@@ -191,16 +193,30 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
         </button>
       </form>
 
-      {/* Footer — ya tienes cuenta — solo en mode=modal */}
-      {mode === "modal" && (
+      {/* Footer — cross-link contextual: modal siempre, page solo con pageVariant */}
+      {(mode === "modal" || pageVariant) && (
         <div className="border-border mt-6 border-t pt-4 text-center text-[13px]">
-          <span className="text-ink-muted">¿Ya tienes cuenta? </span>
-          <a
-            href="/login"
-            className="text-coral hover:text-coral-deep font-medium underline-offset-2 transition-colors hover:underline"
-          >
-            Inicia sesión
-          </a>
+          {mode === "modal" || pageVariant === "register" ? (
+            <>
+              <span className="text-ink-muted">¿Ya tienes cuenta? </span>
+              <a
+                href="/login"
+                className="text-coral hover:text-coral-deep font-medium underline-offset-2 transition-colors hover:underline"
+              >
+                Inicia sesión
+              </a>
+            </>
+          ) : (
+            <>
+              <span className="text-ink-muted">¿No tienes cuenta? </span>
+              <a
+                href="/register/talent"
+                className="text-coral hover:text-coral-deep font-medium underline-offset-2 transition-colors hover:underline"
+              >
+                Regístrate
+              </a>
+            </>
+          )}
         </div>
       )}
 
