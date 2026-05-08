@@ -11,7 +11,9 @@ export type OnboardingSource = "pdf" | "instagram";
 export type OnboardingDraft = {
   source: OnboardingSource;
   fileName?: string;
+  fileSize?: number;
   fileUrl?: URLString;
+  uploadedAt?: ISODateString;
   instagramHandle?: string;
   city?: City;
   categoriesOfInterest?: CastingCategory[];
