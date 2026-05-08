@@ -35,6 +35,11 @@ Pantallas completadas:
   [x] Pantalla 1  — feed público (/)                     (commit 43a697a)
   [x] Pantalla 2  — detalle casting (/castings/[id])      (commit 27bf55f)
   [x] Pantalla 3  — login (/login)                        (commit f3f3fdc)
+  [x] Bloque G    — post-auditoría pantalla 3              (commit 0adb08f)
+        · parseAuthRoleParam + TopNav ?role=agency + LoginPage async searchParams
+        · AuthModal: Dialog base-nova en mode=modal (ESC/backdrop/focus-trap nativos)
+        · AuthModal: disabled/aria-busy durante submit, aria-pressed en toggle,
+          focus-visible ring, rounded-[16px], hover:bg-ink/90, footer solo en modal
 
 Próximo paso: Pantalla 4 — Registro talento (/register/talent)
 Bloqueadores: Ninguno

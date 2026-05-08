@@ -66,6 +66,7 @@
   - Pantalla 1 — feed público (`/`): completed (commit 43a697a).
   - Pantalla 2 — detalle casting (`/castings/[id]`): completed (commit 27bf55f).
   - Pantalla 3 — login (`/login`): completed (commit f3f3fdc).
+  - Bloque G — post-auditoría pantalla 3: completed (commit 0adb08f). AuthModal mode=modal usa DialogPrimitive de base-nova; parseAuthRoleParam en utils.ts; LoginPage async con searchParams.
 - Current next step: implement screen 4 — Registro talento (`/register/talent`).
 - Phases are strictly sequential:
   - Fase 0: design diagnosis.
