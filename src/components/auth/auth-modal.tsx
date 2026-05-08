@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { X, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
@@ -52,19 +53,6 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
     defaultValues: { email: "" },
   });
 
-  useEffect(() => {
-    if (mode !== "modal" || !onClose) return;
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
-    };
-  }, [mode, onClose]);
-
   // TODO(fase-3): preservar searchParams.next y redirigir post-auth real
   // TODO(fase-3): reemplazar simulación toast por auth real (Google + magic link)
   async function onSubmit(data: EmailAuthInput) {
@@ -79,31 +67,10 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
     toast.info("Google auth próximamente");
   }
 
-  const box = (
-    <div
-      role={mode === "modal" ? "dialog" : undefined}
-      aria-modal={mode === "modal" ? true : undefined}
-      aria-labelledby="auth-heading"
-      onClick={(e) => e.stopPropagation()}
-      className={cn(
-        "relative w-full",
-        "border-border bg-bg shadow-modal rounded-[16px] border",
-        "animate-th-pop-in",
-      )}
-      style={{ maxWidth: 420, padding: "36px 32px 28px" }}
-    >
-      {/* Botón cerrar — solo en mode=modal */}
-      {mode === "modal" && onClose && (
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Cerrar"
-          className="text-ink-muted hover:bg-beige-soft absolute top-3.5 right-3.5 flex h-[30px] w-[30px] items-center justify-center rounded-lg transition-colors"
-        >
-          <X size={14} strokeWidth={1.5} />
-        </button>
-      )}
-
+  // Contenido compartido entre mode=modal y mode=page.
+  // El botón cerrar NO va aquí — en modal lo maneja DialogPrimitive.Close.
+  const sharedContent = (
+    <>
       {/* Logo */}
       <div className="mb-6">
         <Logo variant="default" />
@@ -132,7 +99,7 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
               onClick={() => setActiveRole(opt.id)}
               className={cn(
                 "flex flex-col gap-0.5 rounded-lg px-3 py-2.5 text-left transition-all duration-150",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink",
+                "focus-visible:ring-ink focus-visible:ring-2 focus-visible:outline-none",
                 active
                   ? "bg-bg border-border border shadow-[0_1px_2px_rgba(10,10,10,0.04)]"
                   : "border border-transparent",
@@ -249,26 +216,65 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
         </a>
         .
       </p>
-    </div>
+    </>
   );
 
+  // mode=modal: Dialog de base-nova gestiona ESC, click-outside,
+  // focus trap, restore focus y body scroll lock de fábrica.
   if (mode === "modal") {
     return (
-      <div
-        onClick={onClose}
-        className="animate-th-fade-in fixed inset-0 z-50 flex items-center justify-center px-5"
-        style={
-          {
-            background: "rgba(10, 10, 10, 0.45)",
-            backdropFilter: "blur(8px)",
-            WebkitBackdropFilter: "blur(8px)",
-          } as React.CSSProperties
-        }
+      <DialogPrimitive.Root
+        open
+        onOpenChange={(open) => {
+          if (!open) onClose?.();
+        }}
       >
-        {box}
-      </div>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Backdrop
+            className="animate-th-fade-in fixed inset-0 z-50"
+            style={
+              {
+                background: "rgba(10, 10, 10, 0.45)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+              } as React.CSSProperties
+            }
+          />
+          <DialogPrimitive.Popup
+            aria-labelledby="auth-heading"
+            className="animate-th-pop-in fixed top-1/2 left-1/2 z-50 w-[calc(100%-2.5rem)] max-w-[420px] -translate-x-1/2 -translate-y-1/2 outline-none"
+          >
+            <div
+              className="border-border bg-bg shadow-modal relative w-full rounded-[16px] border"
+              style={{ padding: "36px 32px 28px" }}
+            >
+              <DialogPrimitive.Close
+                render={
+                  <button
+                    type="button"
+                    aria-label="Cerrar"
+                    className="text-ink-muted hover:bg-beige-soft absolute top-3.5 right-3.5 flex h-[30px] w-[30px] items-center justify-center rounded-lg transition-colors"
+                  />
+                }
+              >
+                <X size={14} strokeWidth={1.5} />
+              </DialogPrimitive.Close>
+              {sharedContent}
+            </div>
+          </DialogPrimitive.Popup>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
     );
   }
 
-  return box;
+  // mode=page: sin Dialog, centrado por el layout de (auth).
+  return (
+    <div
+      aria-labelledby="auth-heading"
+      className="border-border bg-bg shadow-modal relative w-full rounded-[16px] border"
+      style={{ maxWidth: 420, padding: "36px 32px 28px" }}
+    >
+      {sharedContent}
+    </div>
+  );
 }
