@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { X, ArrowRight } from "lucide-react";
@@ -52,8 +52,6 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
     defaultValues: { email: "" },
   });
 
-  const boxRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (mode !== "modal" || !onClose) return;
     const handleKey = (e: KeyboardEvent) => {
@@ -67,6 +65,8 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
     };
   }, [mode, onClose]);
 
+  // TODO(fase-3): preservar searchParams.next y redirigir post-auth real
+  // TODO(fase-3): reemplazar simulación toast por auth real (Google + magic link)
   async function onSubmit(data: EmailAuthInput) {
     await new Promise<void>((resolve) => setTimeout(resolve, 800));
     toast.success("Revisa tu email para continuar", {
@@ -81,14 +81,13 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
 
   const box = (
     <div
-      ref={boxRef}
       role={mode === "modal" ? "dialog" : undefined}
       aria-modal={mode === "modal" ? true : undefined}
       aria-labelledby="auth-heading"
       onClick={(e) => e.stopPropagation()}
       className={cn(
         "relative w-full",
-        "border-border bg-bg shadow-modal rounded-2xl border",
+        "border-border bg-bg shadow-modal rounded-[16px] border",
         "animate-th-pop-in",
       )}
       style={{ maxWidth: 420, padding: "36px 32px 28px" }}
@@ -128,12 +127,16 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
             <button
               key={opt.id}
               type="button"
+              disabled={isSubmitting}
+              aria-pressed={active}
               onClick={() => setActiveRole(opt.id)}
               className={cn(
                 "flex flex-col gap-0.5 rounded-lg px-3 py-2.5 text-left transition-all duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink",
                 active
                   ? "bg-bg border-border border shadow-[0_1px_2px_rgba(10,10,10,0.04)]"
                   : "border border-transparent",
+                isSubmitting && "cursor-not-allowed opacity-50",
               )}
             >
               <span
@@ -153,8 +156,9 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
       {/* Botón Google */}
       <button
         type="button"
+        disabled={isSubmitting}
         onClick={handleGoogleClick}
-        className="bg-ink text-bg mb-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[10px] py-3 text-[14px] font-medium transition-colors duration-150 hover:bg-[#222]"
+        className="bg-ink text-bg hover:bg-ink/90 mb-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[10px] py-3 text-[14px] font-medium transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60"
       >
         <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] bg-white">
           <GoogleIcon size={14} />
@@ -170,7 +174,12 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
       </div>
 
       {/* Formulario email */}
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-2.5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        className="flex flex-col gap-2.5"
+        aria-busy={isSubmitting}
+      >
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="auth-email"
@@ -183,6 +192,7 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
             type="email"
             placeholder="tu@email.com"
             autoComplete="email"
+            disabled={isSubmitting}
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? "auth-email-error" : undefined}
             className={cn(
@@ -214,16 +224,18 @@ export function AuthModal({ mode, initialRole = "talent", onClose }: AuthModalPr
         </button>
       </form>
 
-      {/* Footer — ya tienes cuenta */}
-      <div className="border-border mt-6 border-t pt-4 text-center text-[13px]">
-        <span className="text-ink-muted">¿Ya tienes cuenta? </span>
-        <a
-          href="/login"
-          className="text-coral hover:text-coral-deep font-medium underline-offset-2 transition-colors hover:underline"
-        >
-          Inicia sesión
-        </a>
-      </div>
+      {/* Footer — ya tienes cuenta — solo en mode=modal */}
+      {mode === "modal" && (
+        <div className="border-border mt-6 border-t pt-4 text-center text-[13px]">
+          <span className="text-ink-muted">¿Ya tienes cuenta? </span>
+          <a
+            href="/login"
+            className="text-coral hover:text-coral-deep font-medium underline-offset-2 transition-colors hover:underline"
+          >
+            Inicia sesión
+          </a>
+        </div>
+      )}
 
       {/* Microcopy */}
       <p className="text-ink-muted mt-3.5 text-center text-[11px] leading-[1.5]">

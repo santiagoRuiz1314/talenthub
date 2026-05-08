@@ -32,3 +32,9 @@ export function parseCastingIdParam(id: unknown): string | null {
   if (typeof id !== "string" || id.trim() === "") return null;
   return id.trim();
 }
+
+export function parseAuthRoleParam(value: unknown): "talent" | "agency" {
+  const str = Array.isArray(value) ? value[0] : value;
+  if (str === "agency") return "agency";
+  return "talent";
+}

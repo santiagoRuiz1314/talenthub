@@ -51,7 +51,7 @@ export function TopNav({ variant }: Props) {
             </Suspense>
           </div>
           <Link
-            href="/login"
+            href="/login?role=agency"
             className="text-ink-muted hover:text-ink hidden rounded-md px-3 py-2 text-[13.5px] transition-colors sm:inline-flex"
           >
             Soy agencia
