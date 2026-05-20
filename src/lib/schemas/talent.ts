@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { castingCategorySchema } from "./casting";
 import {
   citySchema,
   genderSchema,
@@ -68,6 +69,7 @@ export const talentInputSchema = z.object({
   socialLinks: socialLinksSchema,
   experience: z.array(experienceItemInputSchema),
   gallery: z.array(galleryPhotoInputSchema),
+  categoriesOfInterest: z.array(castingCategorySchema).optional(),
 });
 
 export const talentUpdateSchema = talentInputSchema.partial();
