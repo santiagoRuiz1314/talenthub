@@ -1,3 +1,4 @@
+import type { CastingCategory } from "./casting";
 import type { AgeRange, City, Gender, ISODateString, Language, URLString, UUID } from "./shared";
 
 export type EyeColor = "brown" | "black" | "hazel" | "green" | "blue" | "gray";
@@ -69,6 +70,8 @@ export type Talent = {
   socialLinks: SocialLinks;
   experience: ExperienceItem[];
   gallery: GalleryPhoto[];
+  /** Categorías que le interesan al talento (vienen del onboarding). */
+  categoriesOfInterest?: CastingCategory[];
   portfolio?: Portfolio;
   createdAt: ISODateString;
   updatedAt: ISODateString;

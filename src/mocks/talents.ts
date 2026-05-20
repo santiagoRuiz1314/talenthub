@@ -224,6 +224,7 @@ const FEATURED: Talent = {
     { id: "g_001_4", url: photoUrl("t-001-4", 600, 800), alt: "Foto de campaña", order: 3 },
     { id: "g_001_5", url: photoUrl("t-001-5", 600, 800), alt: "Foto editorial", order: 4 },
   ],
+  categoriesOfInterest: ["editorial", "runway", "digital_content"],
   portfolio: {
     id: "pf_001",
     talentId: "t_001",
