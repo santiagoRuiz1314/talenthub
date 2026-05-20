@@ -1,4 +1,9 @@
-import type { LucideProps } from "lucide-react";
+import type { SVGProps } from "react";
+
+type PdfIconProps = Omit<SVGProps<SVGSVGElement>, "width" | "height" | "strokeWidth"> & {
+  size?: number;
+  strokeWidth?: number;
+};
 
 /**
  * Ícono de archivo PDF con gradient coral suave → coral pleno y corner fold.
@@ -9,9 +14,8 @@ export function PdfIcon({
   size = 40,
   strokeWidth = 1.5,
   className,
-  color: _color,
   ...rest
-}: LucideProps) {
+}: PdfIconProps) {
   return (
     <svg
       width={size}

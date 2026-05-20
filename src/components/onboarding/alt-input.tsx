@@ -15,10 +15,10 @@ interface AltInputProps {
 }
 
 /**
- * Campo alternativo al PDF: trigger colapsado → input de handle de Instagram expandido.
- * El prefijo "instagram.com/" es visual decorativo — `value` contiene solo el handle.
+ * Campo alternativo al PDF: trigger colapsado → input de Instagram o portfolio expandido.
+ * El prefijo "https://" es visual decorativo — `value` contiene el resto de la URL o handle.
  * Estado expanded/collapsed interno; el resto es controlado por el padre.
- * Se monta bajo la DropZone en /onboarding. Conecta con instagramHandleSchema (onBlur).
+ * Se monta bajo la DropZone en /onboarding. Conecta con el schema alternativo (onBlur).
  *
  * Posicionamiento: el wrapper externo (mx-auto max-w-[460px]) centra ambos estados.
  * El padre no necesita agregar centering propio.
@@ -46,6 +46,7 @@ export function AltInput({
     <div className="mx-auto flex max-w-[460px] flex-col items-center gap-1.5">
       {!expanded ? (
         <button
+          type="button"
           onClick={() => setExpanded(true)}
           disabled={disabled}
           className="cursor-pointer bg-transparent p-0 text-[13.5px] text-ink-muted
@@ -53,7 +54,7 @@ export function AltInput({
         >
           ¿No tienes portafolio en PDF?{" "}
           <span className="font-medium text-coral underline underline-offset-[3px]">
-            Usa tu handle de Instagram
+            Pega tu Instagram o portfolio web
           </span>
         </button>
       ) : (
@@ -66,22 +67,20 @@ export function AltInput({
           )}
         >
           <span className="shrink-0 select-none text-[13px] text-ink-muted">
-            instagram.com/
+            https://
           </span>
-          {/* Placeholder "tu_usuario": el prefijo "instagram.com/" ya es visible decorativamente.
-              Diverge del placeholder "instagram.com/tu_usuario" que documenta el diseño fuente —
-              esa versión produciría duplicación visual con el prefijo afuera del input. */}
           <input
             autoFocus
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onBlur={onBlur}
             disabled={disabled}
-            placeholder="tu_usuario"
+            placeholder="instagram.com/tu_usuario"
             className="flex-1 bg-transparent py-2 text-[13.5px] text-ink
                        outline-none placeholder:text-ink-muted/50"
           />
           <button
+            type="button"
             onClick={() => {
               onClear();
               setExpanded(false);

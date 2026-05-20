@@ -28,9 +28,8 @@ export const instagramHandleSchema = z
   .pipe(
     z
       .string()
-      .min(1, "Ingresa tu handle de Instagram")
-      .max(30, "Máximo 30 caracteres")
-      .regex(/^[a-zA-Z0-9_.]+$/, "Solo letras, números, puntos y guiones bajos"),
+      .min(1, "Ingresa tu Instagram o portfolio web")
+      .max(120, "Máximo 120 caracteres"),
   );
 
 export const onboardingStep1Schema = z
@@ -42,7 +41,7 @@ export const onboardingStep1Schema = z
   })
   .refine(
     (d) => d.source !== "instagram" || !!d.instagramHandle,
-    { message: "Ingresa tu handle de Instagram", path: ["instagramHandle"] },
+    { message: "Ingresa tu Instagram o portfolio web", path: ["instagramHandle"] },
   );
 
 export type OnboardingStep1Input = z.infer<typeof onboardingStep1Schema>;
