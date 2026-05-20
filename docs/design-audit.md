@@ -12,7 +12,7 @@
 - **Cobertura:** 10/10 pantallas de Fase 2 están diseñadas. Hay 1 pantalla extra (paso 2 de onboarding) y el "Login/Registro" está implementado como **un solo modal compartido**, no como rutas separadas.
 - **Stack del prototipo:** React 18.3.1 (UMD) + Babel-standalone para JSX in-browser + CSS plano con variables CSS + inline styles. **No usa Tailwind, no usa shadcn/ui, no usa lucide-react ni librerías de animación.**
 - **Tokens:** los 5 colores del brief (§7 de CLAUDE.md) están presentes y se confirman, pero el diseño introduce **4 tokens nuevos** (`--ink-muted`, `--coral-deep`, `--coral-soft`, `--beige-soft`) que se vuelven canónicos. Además hay una paleta semántica de estados (azul / verde / rojo apagado) hardcodeada que conviene tokenizar.
-- **Aproximación de migración:** **adaptar, no portar verbatim**. El visual es la fuente de verdad, pero el JSX del prototipo está duplicado entre HTMLs y depende de globals (`window.CASTINGS`, `window.ReqIcon`). Reescribimos sobre Next + Tailwind + shadcn manteniendo fidelidad pixel-perfect en estilos, pero usando los componentes accesibles de shadcn donde apliquen (Dialog, Select, ToggleGroup, Form).
+- **Aproximación de migración:** **adaptar, no portar verbatim**. El visual es la fuente de verdad, pero el JSX del prototipo está duplicado entre HTMLs y depende de globals (`window.CASTINGS`, `window.ReqIcon`). Reescribimos sobre Next + Tailwind + shadcn manteniendo fidelidad pixel-perfect en estilos, pero usando los componentes accesibles de shadcn donde apliquen (Dialog, Select, ToggleGroup).
 - **Bloqueadores:** ninguno. Las 5 decisiones de producto que estaban abiertas se cerraron con David el 2026-05-01 (ver §9).
 
 ---
@@ -91,11 +91,11 @@ design-source/
 | Capa | Implementación | Decisión migración |
 |---|---|---|
 | Runtime | React 18.3.1 (UMD) + ReactDOM 18.3.1 (UMD) + Babel-standalone 7.29.0 in-browser | **Descartar:** scaffolding solo de prototipo. Migrar a React 19 server components donde aplique. |
-| Estilos | CSS plano + `:root` custom properties + inline `style={{...}}` (`react.style`) | **Reescribir a Tailwind**, mapeando vars CSS a tokens del `tailwind.config.ts`. Mantener nombres `--bg / --ink / ...` como CSS vars en `globals.css` para que `bg-background` etc. los referencien. |
+| Estilos | CSS plano + `:root` custom properties + inline `style={{...}}` (`react.style`) | **Reescribir a Tailwind**, mapeando vars CSS a tokens en `globals.css`. Mantener nombres `--bg / --ink / ...` como CSS vars en `globals.css` para que `bg-background` etc. los referencien. |
 | Tipografía | Google Fonts: Inter (400/500/600), Inter Tight (400/500/600/700). En "Mis Castings" además JetBrains Mono (400/500). `font-feature-settings: "ss01", "cv11"` en body. | **Migrar a `next/font`**, self-host. Decidir si JetBrains Mono se mantiene (uso muy puntual: contadores en tabla agencia). |
 | Iconografía | Inline SVG custom — set propio en `components.jsx` (`Icon.{Chevron, Pin, Search, Calendar, Clock, Bookmark, Arrow, Close, Sparkle}`) y `detail-components.jsx` (`ReqIcon.{age, gender, height, features, language, exp}`). Custom: `PdfIcon`, `AISparkle`, `GoogleIcon`. | **Adaptar:** lucide-react cubre el 80% (Pin, Calendar, Clock, Bookmark, Search, ArrowRight, X, ChevronDown). Mantener inline SVG para los **custom** (`PdfIcon`, `AISparkle` con animación, `GoogleIcon` brand-colored). Ver §7. |
 | Animación | CSS `@keyframes`: `th-fade-in`, `th-pop-in`, `th-fade-up`, `th-pulse-soft`, `th-shimmer`, `th-orbit`. Hooks de `window.scroll` para sticky `ApplyBar`. | **Portar verbatim** a `globals.css`. No introducir framer-motion en V1. |
-| UI primitives | Hechos a mano. No shadcn, no Radix, no headlessui. | **Reescribir sobre shadcn/ui** donde haya equivalencia accesible: `Dialog` (AuthModal), `Select` / `Combobox` (CitySelector), `ToggleGroup` (chips multi-select), `Tabs`, `DropdownMenu` (UserMenu/AgencyMenu/RowActions), `Form` + `react-hook-form` + `zod`. Reskinear con tokens del diseño. |
+| UI primitives | Hechos a mano. No shadcn, no Radix, no headlessui. | **Reescribir sobre shadcn/ui** donde haya equivalencia accesible: `Dialog` (AuthModal), `Select` / `Combobox` (CitySelector), `ToggleGroup` (chips multi-select), `Tabs`, `DropdownMenu` (UserMenu/AgencyMenu/RowActions), `react-hook-form` + `zod`. Reskinear con tokens del diseño. |
 | Forms | `useState` plain, validación inline, sin librería | **Reescribir** sobre `react-hook-form` + `zod` (Fase 2 lo exige). |
 | Data layer | `window.CASTINGS` global desde `data.jsx` | **Adaptar:** mover a `src/mocks/castings.ts` con tipos en `src/lib/types/casting.ts`, expuesto por `src/lib/data/castings.ts` async. |
 
@@ -203,7 +203,7 @@ Mínimas, alineadas al brief de "sombras suaves o ausentes":
 | `700` | Mis Aplicaciones simplifica metadata, agency shell stack completo. |
 | `600` | Grid 2→1 col, city selector oculto en nav móvil. |
 
-Recomendación: **mapear a Tailwind defaults (`sm:640 md:768 lg:1024 xl:1280 2xl:1536`) ajustando umbrales más cercanos**. Usar custom screens en `tailwind.config.ts` para los críticos (`960`, `1100`, `1200`).
+Recomendación: **mapear a Tailwind defaults (`sm:640 md:768 lg:1024 xl:1280 2xl:1536`) ajustando umbrales más cercanos**. Usar custom screens en `globals.css` para los críticos (`960`, `1100`, `1200`).
 
 ---
 
@@ -268,7 +268,7 @@ Recomendación: **mapear a Tailwind defaults (`sm:640 md:768 lg:1024 xl:1280 2xl
 | `FilterPill` (dropdown) | `Aplicantes.html` | **Adapta** → shadcn `Popover` + custom trigger |
 | `PhotoUpload` | `Publicar Casting.html` | **Porta** — drop zone + file card |
 | `OptionalDetails` (collapsible) | `Publicar Casting.html` | **Adapta** → shadcn `Collapsible` |
-| `Field`, `TextInput`, `Textarea` | `Publicar Casting.html` + variante en `Completar Perfil.html` | **Reescribe** sobre shadcn `Form` + RHF + zod (Fase 2 lo exige) |
+| `Field`, `TextInput`, `Textarea` | `Publicar Casting.html` + variante en `Completar Perfil.html` | **Reescribe** sobre RHF + zod (Fase 2 lo exige) |
 
 ### 6.5 Onboarding (paso 1 + 2)
 
@@ -332,7 +332,7 @@ Recomendación: **mapear a Tailwind defaults (`sm:640 md:768 lg:1024 xl:1280 2xl
 
 Decididas en CLAUDE.md §4:
 - `next` (App Router), `typescript`, `tailwindcss`, `eslint`, `prettier`, `prettier-plugin-tailwindcss`
-- `shadcn/ui` (vía CLI, instala dependencias Radix)
+- `shadcn/ui` (vía CLI)
 - `lucide-react`
 - Inter + Inter Tight vía `next/font/google`
 
@@ -340,7 +340,7 @@ A confirmar / añadir por el diseño:
 - **JetBrains Mono** vía `next/font/google` — solo si confirmamos que queremos preservar contadores monoespaciados en la tabla de agencia (alternativa: `font-variant-numeric: tabular-nums` con Inter, ahorra una fuente).
 - **`react-hook-form` + `zod` + `@hookform/resolvers`** (Fase 2 los exige; el diseño los necesita para validar email del modal, descripción mín 20 chars, etc.).
 
-Componentes de shadcn a instalar en Fase 1 (de §4 CLAUDE.md, todos confirmados como necesarios): Button, Input, Label, Card, Badge, Avatar, Dialog (AuthModal), DropdownMenu (UserMenu/AgencyMenu/RowActions), Form, Select (CityDropdown, FilterPill base), Textarea, Toast.
+Componentes de shadcn a instalar en Fase 1 (de §4 CLAUDE.md, todos confirmados como necesarios): Button, Input, Label, Card, Badge, Avatar, Dialog (AuthModal), DropdownMenu (UserMenu/AgencyMenu/RowActions), Select (CityDropdown, FilterPill base), Textarea, Toast.
 **Adicionales detectados aquí:** ToggleGroup (chips multi-select), Tabs, Collapsible (OptionalDetails), Popover (FilterPill custom), Tooltip (VerifiedBadge `title=`), Separator, ScrollArea (RecommendedRow horizontal scroll si shadcn maneja mejor el scroll-snap).
 
 Dependencias del diseño que NO portamos:

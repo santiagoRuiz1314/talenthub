@@ -12,7 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -628,7 +628,6 @@ export default function SandboxPage() {
           <code className="font-mono">docs/design-system.md</code>
         </footer>
       </main>
-      <Toaster />
     </TooltipProvider>
   );
 }

@@ -67,4 +67,7 @@ Ver `CLAUDE.md` §5 para la estructura objetivo. Las carpetas existentes en Fase
 
 ## Estado
 
-**Fase 1 — Fundamentos** (en progreso). Próximas fases: maquetación de las 10 pantallas, backend + auth, capa de IA, pulido y deploy.
+**Fase 1 — Fundamentos** ✅ cerrada (2026-05-02).
+**Fase 2 — Maquetación estática** (en curso): tipos, capa de datos abstracta y mocks antes de tocar las 10 pantallas. Ver `CLAUDE.md` §2.
+
+Próximas fases: backend + auth, capa de IA, pulido y deploy.
