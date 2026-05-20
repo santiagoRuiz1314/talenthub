@@ -6,12 +6,17 @@ import type {
   ApplicationWithCasting,
   ApplicationWithTalent,
 } from "@/lib/types/application";
+import type { CastingWithAgency } from "@/lib/types/casting";
 import type { UUID } from "@/lib/types/shared";
+import { mockAgencies } from "@/mocks/agencies";
 import { mockApplications } from "@/mocks/applications";
 import { mockCastings } from "@/mocks/castings";
 import { mockTalents } from "@/mocks/talents";
 
 import { simulateLatency } from "./_latency";
+
+/** Application hidratada con el casting + un subset público de la agencia. */
+export type ApplicationFull = Application & { casting: CastingWithAgency };
 
 /** Aplicaciones del talento, hidratadas con su `casting`. Lo consume `/applications`. */
 export async function getApplications(talentId: UUID): Promise<ApplicationWithCasting[]> {
@@ -21,6 +26,35 @@ export async function getApplications(talentId: UUID): Promise<ApplicationWithCa
     if (a.talentId !== talentId) continue;
     const casting = mockCastings.find((c) => c.id === a.castingId);
     if (casting) result.push({ ...a, casting });
+  }
+  return result;
+}
+
+/**
+ * Aplicaciones del talento hidratadas con casting + agencia (subset público).
+ * Útil para `/applications`: muestra título casting + nombre agencia + status + meta.
+ */
+export async function getApplicationsFull(talentId: UUID): Promise<ApplicationFull[]> {
+  await simulateLatency();
+  const result: ApplicationFull[] = [];
+  for (const a of mockApplications) {
+    if (a.talentId !== talentId) continue;
+    const casting = mockCastings.find((c) => c.id === a.castingId);
+    if (!casting) continue;
+    const agency = mockAgencies.find((g) => g.id === casting.agencyId);
+    if (!agency) continue;
+    result.push({
+      ...a,
+      casting: {
+        ...casting,
+        agency: {
+          id: agency.id,
+          name: agency.name,
+          logoUrl: agency.logoUrl,
+          verificationStatus: agency.verificationStatus,
+        },
+      },
+    });
   }
   return result;
 }
