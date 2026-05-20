@@ -1,12 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LayoutList, Plus, Settings, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-export type AgencyActivePath = "castings" | "applicants" | "settings" | null;
-
 export interface AgencySidebarProps {
-  active: AgencyActivePath;
   /** Cantidad de aplicantes recientes para mostrar como badge en el item. */
   recentApplicants?: number;
   /** Total castings activos para el contador "Este mes". */
@@ -16,15 +16,36 @@ export interface AgencySidebarProps {
 }
 
 const NAV: {
-  id: AgencyActivePath;
   label: string;
   href: string;
+  /** Routes that should mark this item as active. */
+  matches: (path: string) => boolean;
   icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
 }[] = [
-  { id: "castings", label: "Mis castings", href: "/agency/dashboard", icon: LayoutList },
-  { id: null, label: "Publicar nuevo", href: "/agency/castings/new", icon: Plus },
-  { id: "applicants", label: "Aplicantes recientes", href: "#", icon: Users },
-  { id: "settings", label: "Configuración", href: "#", icon: Settings },
+  {
+    label: "Mis castings",
+    href: "/agency/dashboard",
+    matches: (p) => p === "/agency/dashboard",
+    icon: LayoutList,
+  },
+  {
+    label: "Publicar nuevo",
+    href: "/agency/castings/new",
+    matches: (p) => p.startsWith("/agency/castings/new"),
+    icon: Plus,
+  },
+  {
+    label: "Aplicantes recientes",
+    href: "#",
+    matches: (p) => p.startsWith("/agency/castings/") && p.endsWith("/applicants"),
+    icon: Users,
+  },
+  {
+    label: "Configuración",
+    href: "#",
+    matches: () => false,
+    icon: Settings,
+  },
 ];
 
 /**
@@ -33,11 +54,11 @@ const NAV: {
  * counter de aplicantes.
  */
 export function AgencySidebar({
-  active,
   recentApplicants,
   activeCastings,
   applicantsThisMonth,
 }: AgencySidebarProps) {
+  const pathname = usePathname() ?? "";
   return (
     <aside
       className="hidden border-r border-border lg:sticky lg:top-16 lg:block lg:h-[calc(100vh-64px)] lg:overflow-y-auto lg:px-4 lg:py-7"
@@ -47,15 +68,16 @@ export function AgencySidebar({
       </div>
       <nav className="flex flex-col gap-0.5">
         {NAV.map((item) => {
-          const isActive = item.id !== null && item.id === active;
+          const isActive = item.matches(pathname);
           const Icon = item.icon;
           const badge =
-            item.id === "applicants" && recentApplicants !== undefined
+            item.label === "Aplicantes recientes" && recentApplicants !== undefined
               ? recentApplicants
-              : item.id === "castings"
+              : item.label === "Mis castings"
                 ? activeCastings
                 : undefined;
-          const badgeAccent = item.id === "applicants" && (recentApplicants ?? 0) > 0;
+          const badgeAccent =
+            item.label === "Aplicantes recientes" && (recentApplicants ?? 0) > 0;
 
           return (
             <Link
