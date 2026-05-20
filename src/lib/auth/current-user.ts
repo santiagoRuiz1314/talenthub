@@ -1,5 +1,7 @@
+import { mockAgencies } from "@/mocks/agencies";
 import { mockCurrentUserId, mockUsers } from "@/mocks/users";
 import { mockTalents } from "@/mocks/talents";
+import type { Agency } from "@/lib/types/agency";
 import type { User } from "@/lib/types/user";
 import type { Talent } from "@/lib/types/talent";
 import type { UUID } from "@/lib/types/shared";
@@ -33,4 +35,14 @@ export async function getCurrentTalent(): Promise<Talent | null> {
   if (!mockCurrentUserId) return null;
   const t = mockTalents.find((x) => x.userId === mockCurrentUserId);
   return t ? { ...t } : null;
+}
+
+/**
+ * Agencia "actual" para los flujos agency en Fase 2.
+ * Fija a `mockAgencies[0]` (Estudio Polígono) — Fase 3 lo determinará por la
+ * sesión real del usuario autenticado.
+ */
+export async function getCurrentAgency(): Promise<Agency | null> {
+  await simulateLatency();
+  return mockAgencies[0] ? { ...mockAgencies[0] } : null;
 }
