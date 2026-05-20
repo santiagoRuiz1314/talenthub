@@ -71,6 +71,9 @@ const AGE_LABELS: Record<(typeof AGE_VALUES)[number], string> = {
   "35": "35+",
 };
 
+const PHASE_2_NOW_MS = Date.parse("2026-05-02T10:00:00.000Z");
+const DAY_MS = 1000 * 60 * 60 * 24;
+
 function inAgeRange(age: number, bucket: (typeof AGE_VALUES)[number]): boolean {
   if (bucket === "18-24") return age >= 18 && age <= 24;
   if (bucket === "25-34") return age >= 25 && age <= 34;
@@ -128,9 +131,8 @@ export default async function ApplicantsPage({
     return qs ? `${basePath}?${qs}` : basePath;
   };
 
-  const daysToDeadline = Math.ceil(
-    (new Date(casting.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24),
-  );
+  // Fase 2 usa fechas mock determinísticas; evitar Date.now() durante render.
+  const daysToDeadline = Math.ceil((Date.parse(casting.deadline) - PHASE_2_NOW_MS) / DAY_MS);
   const closingToday = casting.status === "active" && daysToDeadline === 0;
   const closesSoon = casting.status === "active" && daysToDeadline > 0 && daysToDeadline <= 2;
 
