@@ -1,7 +1,7 @@
 import type { CastingCategory } from "./casting";
 import type { City, ISODateString, URLString } from "./shared";
 
-export type OnboardingSource = "pdf" | "instagram";
+export type OnboardingSource = "pdf" | "instagram" | "manual";
 
 /**
  * Draft del onboarding del talento.
@@ -11,7 +11,9 @@ export type OnboardingSource = "pdf" | "instagram";
 export type OnboardingDraft = {
   source: OnboardingSource;
   fileName?: string;
+  fileSize?: number;
   fileUrl?: URLString;
+  uploadedAt?: ISODateString;
   instagramHandle?: string;
   city?: City;
   categoriesOfInterest?: CastingCategory[];
