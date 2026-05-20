@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+import { castingCategorySchema } from "./casting";
+import { citySchema, languageCodeSchema } from "./shared";
+
 export const PDF_MAX_SIZE_BYTES = 8 * 1024 * 1024; // 8 MB
 
 // TODO(fase-4): se dispara cuando la IA falle la extracción del PDF.
@@ -45,3 +48,32 @@ export const onboardingStep1Schema = z
   );
 
 export type OnboardingStep1Input = z.infer<typeof onboardingStep1Schema>;
+
+/** Teléfono colombiano local (sin prefijo +57). 7–11 dígitos con espacios permitidos. */
+export const phoneLocalSchema = z
+  .string()
+  .transform((s) => s.trim())
+  .pipe(
+    z
+      .string()
+      .regex(/^[0-9 ]+$/, "Solo números")
+      .refine((s) => s.replace(/\s/g, "").length >= 7, "Mínimo 7 dígitos")
+      .refine((s) => s.replace(/\s/g, "").length <= 11, "Máximo 11 dígitos"),
+  );
+
+export const onboardingStep2Schema = z.object({
+  city: citySchema,
+  languages: z.array(languageCodeSchema).default([]),
+  categoriesOfInterest: z
+    .array(castingCategorySchema)
+    .min(1, "Selecciona al menos 1 categoría"),
+  phone: z
+    .string()
+    .optional()
+    .refine(
+      (v) => !v || v.trim() === "" || phoneLocalSchema.safeParse(v).success,
+      "Teléfono inválido",
+    ),
+});
+
+export type OnboardingStep2Input = z.infer<typeof onboardingStep2Schema>;
