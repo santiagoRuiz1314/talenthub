@@ -11,6 +11,65 @@ import type {
 import { daysAgo, pad3, photoUrl, pick, yearsAgoDate } from "./_helpers";
 import { TALENT_SEEDS, emailSlug } from "./_seeds";
 
+/**
+ * Fotos reales locales — una imagen única por talento, sin repetir.
+ * Se aplican como `gallery[0]` (la imagen principal mostrada en card y hero).
+ * El resto de la galería sigue siendo placeholder hasta que haya más fotos reales.
+ * Origen: todas las imágenes provienen de Unsplash (licencia Unsplash, uso libre).
+ */
+const TALENT_PHOTO_OVERRIDES: Record<string, string> = {
+  t_001: "/images/talents/t-001.jpg",
+  t_002: "/images/talents/t-002.jpg",
+  t_003: "/images/talents/t-003.jpg",
+  t_004: "/images/talents/t-004.jpg",
+  t_005: "/images/talents/t-005.jpg",
+  t_006: "/images/talents/t-006.jpg",
+  t_007: "/images/talents/t-007.jpg",
+  t_008: "/images/talents/t-008.jpg",
+  t_009: "/images/talents/t-009.jpg",
+  t_010: "/images/talents/t-010.jpg",
+  t_011: "/images/talents/t-011.jpg",
+  t_012: "/images/talents/t-012.jpg",
+  t_013: "/images/talents/t-013.jpg",
+  t_014: "/images/talents/t-014.jpg",
+  t_015: "/images/talents/t-015.jpg",
+  t_016: "/images/talents/t-016.jpg",
+  t_017: "/images/talents/t-017.jpg",
+  t_018: "/images/talents/t-018.jpg",
+  t_019: "/images/talents/t-019.jpg",
+  t_020: "/images/talents/t-020.jpg",
+  t_021: "/images/talents/t-021.jpg",
+  t_022: "/images/talents/t-022.jpg",
+  t_023: "/images/talents/t-023.jpg",
+  t_024: "/images/talents/t-024.jpg",
+  t_025: "/images/talents/t-025.jpg",
+  t_026: "/images/talents/t-026.jpg",
+  t_027: "/images/talents/t-027.jpg",
+  t_028: "/images/talents/t-028.jpg",
+  t_029: "/images/talents/t-029.jpg",
+  t_030: "/images/talents/t-030.jpg",
+  t_031: "/images/talents/t-031.jpg",
+  t_032: "/images/talents/t-032.jpg",
+  t_033: "/images/talents/t-033.jpg",
+  t_034: "/images/talents/t-034.jpg",
+  t_035: "/images/talents/t-035.jpg",
+  t_036: "/images/talents/t-036.jpg",
+  t_037: "/images/talents/t-037.jpg",
+  t_038: "/images/talents/t-038.jpg",
+  t_039: "/images/talents/t-039.jpg",
+  t_040: "/images/talents/t-040.jpg",
+  t_041: "/images/talents/t-041.jpg",
+  t_042: "/images/talents/t-042.jpg",
+  t_043: "/images/talents/t-043.jpg",
+  t_044: "/images/talents/t-044.jpg",
+  t_045: "/images/talents/t-045.jpg",
+  t_046: "/images/talents/t-046.jpg",
+  t_047: "/images/talents/t-047.jpg",
+  t_048: "/images/talents/t-048.jpg",
+  t_049: "/images/talents/t-049.jpg",
+  t_050: "/images/talents/t-050.jpg",
+};
+
 // Constantes para los generadores deterministas
 const FEMALE_MEASUREMENTS = [
   { bustCm: 86, waistCm: 64, hipsCm: 92 },
@@ -130,12 +189,15 @@ function buildExperience(i: number, talentIdx: string): ExperienceItem[] {
 
 function buildGallery(i: number, talentIdx: string): GalleryPhoto[] {
   const count = 3 + (i % 3); // 3..5 photos
-  return Array.from({ length: count }, (_, j) => ({
-    id: `g_${talentIdx}_${j + 1}`,
-    url: photoUrl(`t-${talentIdx}-${j + 1}`, 600, 800),
-    alt: `Foto ${j + 1}`,
-    order: j,
-  }));
+  return Array.from({ length: count }, (_, j) => {
+    const override = j === 0 ? TALENT_PHOTO_OVERRIDES[`t_${talentIdx}`] : undefined;
+    return {
+      id: `g_${talentIdx}_${j + 1}`,
+      url: override ?? photoUrl(`t-${talentIdx}-${j + 1}`, 600, 800),
+      alt: `Foto ${j + 1}`,
+      order: j,
+    };
+  });
 }
 
 function buildPortfolio(i: number, talentIdx: string, slug: string): Portfolio | undefined {
@@ -218,7 +280,7 @@ const FEATURED: Talent = {
     },
   ],
   gallery: [
-    { id: "g_001_1", url: photoUrl("t-001-1", 600, 800), alt: "Foto editorial", order: 0 },
+    { id: "g_001_1", url: TALENT_PHOTO_OVERRIDES.t_001, alt: "Foto editorial", order: 0 },
     { id: "g_001_2", url: photoUrl("t-001-2", 600, 800), alt: "Foto de pasarela", order: 1 },
     { id: "g_001_3", url: photoUrl("t-001-3", 600, 800), alt: "Foto comercial", order: 2 },
     { id: "g_001_4", url: photoUrl("t-001-4", 600, 800), alt: "Foto de campaña", order: 3 },

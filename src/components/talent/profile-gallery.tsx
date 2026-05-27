@@ -34,10 +34,13 @@ export function ProfileGallery({ photos }: ProfileGalleryProps) {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {photos.map((p, i) => {
           const ratio = i === 0 || i === 3 ? "aspect-square" : "aspect-[3/4]";
+          const isLocal = p.url.startsWith("/");
           return (
             <PhotoPlaceholder
               key={p.id}
               seed={p.id}
+              src={isLocal ? p.url : undefined}
+              alt={p.alt}
               className={`${ratio} w-full rounded-[10px]`}
             />
           );

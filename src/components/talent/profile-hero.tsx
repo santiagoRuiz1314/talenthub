@@ -37,6 +37,8 @@ export function ProfileHero({ talent, stats, available = true }: ProfileHeroProp
       <div className="relative">
         <PhotoPlaceholder
           seed={`profile-hero-${talent.id}`}
+          src={talent.gallery[0]?.url}
+          alt={`${talent.firstName} ${talent.lastName}`}
           className="aspect-[3/4] w-full rounded-[16px]"
         />
         <div

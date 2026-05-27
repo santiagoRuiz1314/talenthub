@@ -37,6 +37,8 @@ export function ApplicantCard({ application, matchScore }: ApplicantCardProps) {
       <div className="relative">
         <PhotoPlaceholder
           seed={`applicant-${talent.id}`}
+          src={talent.gallery[0]?.url}
+          alt={`${talent.firstName} ${talent.lastName}`}
           className="aspect-[4/5] w-full rounded-none"
         />
         <div className="absolute left-3 top-3">

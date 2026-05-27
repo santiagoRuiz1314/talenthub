@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 const HUES = [8, 12, 14, 18, 22, 24, 28, 30, 32, 38, 42] as const;
@@ -13,14 +15,38 @@ function hashSeed(seed: string): number {
 type Props = {
   seed: string;
   className?: string;
+  /** Si se pasa una URL local/remota, se muestra la foto real en vez del gradient. */
+  src?: string;
+  alt?: string;
 };
 
 /**
  * Placeholder cálido determinístico por seed. Reemplaza Lorem Picsum / Unsplash
  * mientras no haya fotos reales — al cambiar a fotos no se siente roto.
+ * Si recibe `src`, renderiza la foto real (object-cover) en vez del gradient.
  * Spec visual: docs/design-system.md §9 "Photo placeholder".
  */
-export function PhotoPlaceholder({ seed, className }: Props) {
+export function PhotoPlaceholder({ seed, className, src, alt }: Props) {
+  if (src) {
+    const isLocal = src.startsWith("/");
+    return (
+      <div className={cn("relative overflow-hidden rounded-lg bg-beige-soft", className)}>
+        {isLocal ? (
+          <Image
+            src={src}
+            alt={alt ?? ""}
+            fill
+            sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+            className="object-cover"
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={src} alt={alt ?? ""} className="absolute inset-0 h-full w-full object-cover" />
+        )}
+      </div>
+    );
+  }
+
   const h = HUES[hashSeed(seed) % HUES.length];
   const bgA = `hsl(${h}, 35%, 72%)`;
   const bgB = `hsl(${h + 8}, 28%, 58%)`;
