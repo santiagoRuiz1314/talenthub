@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { AgencySidebar } from "@/components/shared/agency-sidebar";
 import { AgencyTopNav } from "@/components/shared/agency-top-nav";
 import { getAgencyStats } from "@/lib/data/agencies";
-import { getCurrentAgency } from "@/lib/auth/current-user";
+import { getCurrentAgency, getCurrentUser } from "@/lib/auth/current-user";
 
 /**
  * Layout del área agencia. Sticky TopNav arriba + grid sidebar/main.
@@ -12,7 +12,7 @@ import { getCurrentAgency } from "@/lib/auth/current-user";
  * El sidebar deduce el item activo via `usePathname()`.
  */
 export default async function AgencyLayout({ children }: { children: ReactNode }) {
-  const agency = await getCurrentAgency();
+  const [agency, user] = await Promise.all([getCurrentAgency(), getCurrentUser()]);
   if (!agency) {
     redirect("/login?role=agency");
   }
@@ -21,7 +21,7 @@ export default async function AgencyLayout({ children }: { children: ReactNode }
 
   return (
     <div className="bg-bg flex min-h-screen flex-col">
-      <AgencyTopNav agency={agency} />
+      <AgencyTopNav agency={agency} ownerEmail={user?.email} />
       <div className="grid flex-1 lg:grid-cols-[240px_1fr]">
         <AgencySidebar
           recentApplicants={stats.applicantsThisMonth}

@@ -18,6 +18,18 @@ import { simulateLatency } from "./_latency";
 /** Application hidratada con el casting + un subset público de la agencia. */
 export type ApplicationFull = Application & { casting: CastingWithAgency };
 
+/** Devuelve la `Application` si el talento ya aplicó al casting, o `null`. */
+export async function hasApplied(
+  talentId: UUID,
+  castingId: UUID,
+): Promise<Application | null> {
+  await simulateLatency();
+  const found = mockApplications.find(
+    (a) => a.talentId === talentId && a.castingId === castingId,
+  );
+  return found ? { ...found } : null;
+}
+
 /** Aplicaciones del talento, hidratadas con su `casting`. Lo consume `/applications`. */
 export async function getApplications(talentId: UUID): Promise<ApplicationWithCasting[]> {
   await simulateLatency();

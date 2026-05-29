@@ -1,5 +1,6 @@
 "use client";
 
+import { useTransition } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 
@@ -10,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { logout } from "@/lib/auth/actions";
 import { cn } from "@/lib/utils";
 
 export interface UserMenuItem {
@@ -28,7 +30,10 @@ export interface UserMenuProps {
   /** Iniciales para el avatar (máx 2 letras). */
   initials: string;
   items: UserMenuItem[];
-  /** Acción de logout (último item, estilo muted). */
+  /**
+   * Si está presente, override del logout default. Si no, se usa la server
+   * action `logout()` que limpia la cookie y redirige a `/`.
+   */
   onLogout?: () => void;
 }
 
@@ -45,6 +50,14 @@ export function UserMenu({
   items,
   onLogout,
 }: UserMenuProps) {
+  const [isPending, startTransition] = useTransition();
+  const handleLogout =
+    onLogout ??
+    (() => {
+      startTransition(() => {
+        void logout();
+      });
+    });
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -99,18 +112,16 @@ export function UserMenu({
             );
           })}
         </div>
-        {onLogout && (
-          <>
-            <DropdownMenuSeparator className="my-1.5" />
-            <DropdownMenuItem
-              onClick={onLogout}
-              className="block w-full rounded-md px-2.5 py-2 text-left text-[13px] text-ink-muted
-                         transition-colors data-highlighted:bg-beige-soft data-highlighted:text-ink"
-            >
-              Cerrar sesión
-            </DropdownMenuItem>
-          </>
-        )}
+        <DropdownMenuSeparator className="my-1.5" />
+        <DropdownMenuItem
+          onClick={handleLogout}
+          disabled={isPending}
+          className="block w-full rounded-md px-2.5 py-2 text-left text-[13px] text-ink-muted
+                     transition-colors data-highlighted:bg-beige-soft data-highlighted:text-ink
+                     data-[disabled]:cursor-not-allowed data-[disabled]:opacity-60"
+        >
+          {isPending ? "Cerrando…" : "Cerrar sesión"}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

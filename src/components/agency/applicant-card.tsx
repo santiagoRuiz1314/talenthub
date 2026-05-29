@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, ImagePlus, Sparkles, Star } from "lucide-react";
+import { ArrowRight, ImagePlus, Sparkles } from "lucide-react";
 
 import { ApplicantStatusBadge } from "@/components/agency/applicant-status-badge";
+import { PreselectButton } from "@/components/agency/preselect-button";
 import { PhotoPlaceholder } from "@/components/shared/photo-placeholder";
 import { CITY_LABELS } from "@/lib/constants";
 import type { ApplicationWithTalent } from "@/lib/types/application";
-import { cn, computeAge } from "@/lib/utils";
+import { computeAge } from "@/lib/utils";
 
 export interface ApplicantCardProps {
   application: ApplicationWithTalent;
@@ -25,7 +26,6 @@ export function ApplicantCard({ application, matchScore }: ApplicantCardProps) {
   const { talent } = application;
   const age = computeAge(talent.birthDate);
   const photosCount = talent.gallery.length;
-  const isPreselected = application.status === "pre_selected";
 
   const tags = (talent.categoriesOfInterest ?? []).slice(0, 3);
 
@@ -101,24 +101,7 @@ export function ApplicantCard({ application, matchScore }: ApplicantCardProps) {
             Ver portafolio
             <ArrowRight size={11} strokeWidth={1.5} aria-hidden />
           </Link>
-          <button
-            type="button"
-            aria-label={isPreselected ? "Quitar pre-selección" : "Pre-seleccionar"}
-            aria-pressed={isPreselected}
-            className={cn(
-              "inline-flex h-auto w-[38px] shrink-0 items-center justify-center rounded-[9px] border transition-colors",
-              isPreselected
-                ? "border-transparent bg-coral-soft text-coral-deep"
-                : "border-border bg-bg text-ink hover:bg-beige-soft",
-            )}
-          >
-            <Star
-              size={14}
-              strokeWidth={1.5}
-              fill={isPreselected ? "currentColor" : "none"}
-              aria-hidden
-            />
-          </button>
+          <PreselectButton applicationId={application.id} initialStatus={application.status} />
         </div>
       </div>
     </article>

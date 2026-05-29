@@ -1,7 +1,14 @@
 import { Suspense } from "react";
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
+import { UserMenu, type UserMenuItem } from "@/components/shared/user-menu";
+import {
+  getCurrentAgency,
+  getCurrentTalent,
+  getCurrentUser,
+} from "@/lib/auth/current-user";
+import { CITY_LABELS } from "@/lib/constants";
+import { cn, nameInitials } from "@/lib/utils";
 
 import { CitySelector, CitySelectorFallback } from "./city-selector";
 import { Logo } from "./logo";
@@ -18,8 +25,14 @@ const NAV_LINKS: { href: string; label: string; active?: boolean }[] = [
   { href: "#", label: "Recursos" },
 ];
 
-export function TopNav({ variant }: Props) {
+export async function TopNav({ variant }: Props) {
   if (variant !== "public") return null;
+  const user = await getCurrentUser();
+  const isTalent = user?.role === "talent";
+  const isAgency = user?.role === "agency";
+  const talent = isTalent ? await getCurrentTalent() : null;
+  const agency = isAgency ? await getCurrentAgency() : null;
+
   return (
     <header
       className="border-border sticky top-0 z-30 border-b backdrop-blur-[12px] backdrop-saturate-[180%]"
@@ -50,18 +63,58 @@ export function TopNav({ variant }: Props) {
               <CitySelector />
             </Suspense>
           </div>
-          <Link
-            href="/login?role=agency"
-            className="text-ink-muted hover:text-ink hidden rounded-md px-3 py-2 text-[13.5px] transition-colors sm:inline-flex"
-          >
-            Soy agencia
-          </Link>
-          <Link
-            href="/login"
-            className="text-ink hover:bg-beige-soft inline-flex rounded-md px-3 py-2 text-[13.5px] font-medium transition-colors"
-          >
-            Entrar
-          </Link>
+          {talent ? (
+            <UserMenu
+              shortName={talent.firstName}
+              fullName={`${talent.firstName} ${talent.lastName}`}
+              email={user?.email ?? ""}
+              initials={nameInitials(talent.firstName, talent.lastName)}
+              items={
+                [
+                  { label: "Mi perfil", href: "/profile" },
+                  { label: "Mis aplicaciones", href: "/applications" },
+                ] satisfies UserMenuItem[]
+              }
+            />
+          ) : agency ? (
+            <>
+              <Link
+                href="/agency/dashboard"
+                className="text-ink hover:bg-beige-soft hidden rounded-md px-3 py-2 text-[13.5px] font-medium transition-colors sm:inline-flex"
+              >
+                Ir al dashboard
+              </Link>
+              <UserMenu
+                shortName={agency.name}
+                fullName={agency.name}
+                email={user?.email ?? `Agencia · ${CITY_LABELS[agency.city]}`}
+                initials={agency.name
+                  .split(/\s+/)
+                  .slice(0, 2)
+                  .map((w) => w[0])
+                  .filter(Boolean)
+                  .join("")
+                  .toUpperCase()
+                  .slice(0, 2) || "—"}
+                items={[{ label: "Dashboard", href: "/agency/dashboard" }]}
+              />
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login?role=agency"
+                className="text-ink-muted hover:text-ink hidden rounded-md px-3 py-2 text-[13.5px] transition-colors sm:inline-flex"
+              >
+                Soy agencia
+              </Link>
+              <Link
+                href="/login"
+                className="text-ink hover:bg-beige-soft inline-flex rounded-md px-3 py-2 text-[13.5px] font-medium transition-colors"
+              >
+                Entrar
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

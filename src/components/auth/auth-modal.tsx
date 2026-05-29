@@ -11,6 +11,7 @@ import { Logo } from "@/components/shared/logo";
 import { GoogleIcon } from "@/components/icons/google-icon";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { loginOrRegister } from "@/lib/auth/actions";
 import { emailAuthSchema, type EmailAuthInput } from "@/lib/schemas/auth";
 
 type Role = "talent" | "agency";
@@ -59,14 +60,21 @@ export function AuthModal({ mode, initialRole = "talent", pageVariant, onClose }
     defaultValues: { email: "" },
   });
 
-  // TODO(fase-3): preservar searchParams.next y redirigir post-auth real
-  // TODO(fase-3): reemplazar simulación toast por auth real (Google + magic link)
+  // MVP demo: la action setea cookie y redirige server-side (login, registro
+  // libre o cuenta demo). En Fase 3 se reemplaza por auth real (magic link).
   async function onSubmit(data: EmailAuthInput) {
-    await new Promise<void>((resolve) => setTimeout(resolve, 800));
-    toast.success("Revisa tu email para continuar", {
-      description: data.email,
-    });
-    reset();
+    try {
+      await loginOrRegister(data.email, activeRole);
+      // `loginOrRegister` siempre redirige — esta línea solo corre en error.
+    } catch (err) {
+      // `redirect()` lanza una NEXT_REDIRECT controlada; re-lanzarla para que
+      // Next la maneje. Cualquier otro error se muestra en toast.
+      if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) throw err;
+      toast.error("No se pudo iniciar sesión", {
+        description: err instanceof Error ? err.message : "Intenta de nuevo.",
+      });
+      reset();
+    }
   }
 
   function handleGoogleClick() {
@@ -198,6 +206,21 @@ export function AuthModal({ mode, initialRole = "talent", pageVariant, onClose }
           {isValid && !isSubmitting && <ArrowRight size={13} strokeWidth={1.5} />}
         </button>
       </form>
+
+      {/* Hint MVP demo — eliminar al cablear auth real (Fase 3). */}
+      <div className="bg-beige-soft mt-4 rounded-[10px] px-3 py-2.5 text-[11.5px] leading-[1.45] text-ink-muted">
+        <span className="block font-medium text-ink">Cuentas demo</span>
+        <span className="block">
+          Talento:{" "}
+          <code className="text-ink">talento@demo.com</code>
+        </span>
+        <span className="block">
+          Agencia: <code className="text-ink">agencia@demo.com</code>
+        </span>
+        <span className="mt-1 block text-[10.5px]">
+          O usa cualquier otro email para crear una cuenta vacía.
+        </span>
+      </div>
 
       {/* Footer — cross-link contextual: modal siempre, page solo con pageVariant */}
       {(mode === "modal" || pageVariant) && (

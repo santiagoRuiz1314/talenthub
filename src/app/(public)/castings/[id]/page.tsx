@@ -9,6 +9,8 @@ import { DetailRequirements } from "@/components/casting/detail-requirements";
 import { DetailSimilares } from "@/components/casting/detail-similares";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { Footer } from "@/components/shared/footer";
+import { getCurrentTalent } from "@/lib/auth/current-user";
+import { hasApplied } from "@/lib/data/applications";
 import { getCastingWithAgency, getCastingsWithAgency } from "@/lib/data/castings";
 import { parseCastingIdParam } from "@/lib/utils";
 
@@ -35,6 +37,11 @@ export default async function CastingDetailPage({ params }: { params: Params }) 
   const casting = await getCastingWithAgency(castingId);
   if (!casting || casting.status !== "active") notFound();
 
+  // Estado de aplicación del talento actual (si lo hay).
+  const talent = await getCurrentTalent();
+  const canApply = !!talent;
+  const initiallyApplied = talent ? !!(await hasApplied(talent.id, castingId)) : false;
+
   // Similares: misma categoría, activos, excluye el actual, máximo 3
   const allSimilar = await getCastingsWithAgency({
     category: casting.category,
@@ -57,7 +64,11 @@ export default async function CastingDetailPage({ params }: { params: Params }) 
         <DetailDescription description={casting.description} />
         <DetailRequirements requirements={casting.requirements} />
         <DetailAdditionalInfo casting={casting} />
-        <DetailApplySection casting={casting} />
+        <DetailApplySection
+          casting={casting}
+          initiallyApplied={initiallyApplied}
+          canApply={canApply}
+        />
         {similares.length > 0 && <DetailSimilares castings={similares} />}
       </div>
       <Footer variant="full" />

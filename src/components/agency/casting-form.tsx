@@ -96,38 +96,34 @@ export function CastingForm({ agencyId }: CastingFormProps) {
   const onSubmit = async (data: CastingFormInput) => {
     // TODO(fase-3): subir foto a storage real y guardar URL en photos[].
     // En Fase 2 ignoramos `photo` para no inventar URLs falsas en el mock.
-    try {
-      const { createCasting } = await import("@/lib/data/castings");
-      const today = new Date();
-      const defaultDeadline = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-      await createCasting({
-        agencyId,
-        title: data.title,
-        description: data.description,
-        category: data.category ?? "commercial",
-        status: "active",
-        city: data.city ?? "bogota",
-        location: data.location,
-        requirements: {
-          ageRange:
-            data.ageMin && data.ageMax
-              ? { min: data.ageMin, max: data.ageMax }
-              : undefined,
-          gender: data.gender,
-        },
-        photos: [],
-        deadline: data.deadline ?? defaultDeadline.toISOString().slice(0, 10),
-        shootDate: data.shootDate,
-      });
-      toast.success("Casting publicado", {
-        description: "Ya está visible para los talentos.",
-      });
-      router.push("/agency/dashboard");
-    } catch (err) {
-      toast.error("No pudimos publicar el casting", {
-        description: err instanceof Error ? err.message : "Intenta de nuevo.",
-      });
+    const { createCastingAction } = await import("@/lib/actions/castings");
+    const today = new Date();
+    const defaultDeadline = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+    const result = await createCastingAction({
+      agencyId,
+      title: data.title,
+      description: data.description,
+      category: data.category ?? "commercial",
+      status: "active",
+      city: data.city ?? "bogota",
+      location: data.location,
+      requirements: {
+        ageRange:
+          data.ageMin && data.ageMax ? { min: data.ageMin, max: data.ageMax } : undefined,
+        gender: data.gender,
+      },
+      photos: [],
+      deadline: data.deadline ?? defaultDeadline.toISOString().slice(0, 10),
+      shootDate: data.shootDate,
+    });
+    if (!result.ok) {
+      toast.error("No pudimos publicar el casting", { description: result.message });
+      return;
     }
+    toast.success("Casting publicado", {
+      description: "Ya está visible para los talentos.",
+    });
+    router.push("/agency/dashboard");
   };
 
   return (

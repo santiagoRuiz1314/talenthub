@@ -40,8 +40,8 @@ const adminUser: User = {
 export const mockUsers: User[] = [...talentUsers, ...agencyOwnerUsers, adminUser];
 
 /**
- * User "actualmente autenticado" para los mocks. Apunta a `u_t_001` (Valentina
- * Restrepo, Medellín, perfil completo) — usuario de prueba en todas las pantallas.
- * Para simular otro rol, cambiar el literal aquí (ej. `"u_a_001"` para agencia).
+ * @deprecated MVP demo lee la sesión real desde la cookie `talenthub-session`
+ * vía `lib/auth/session.ts`. Esta constante queda en `null` para evitar
+ * loguear silenciosamente como `u_t_001` cuando no hay cookie.
  */
-export const mockCurrentUserId: UUID | null = "u_t_001";
+export const mockCurrentUserId: UUID | null = null;

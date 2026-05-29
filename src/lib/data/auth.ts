@@ -1,29 +1,12 @@
-import type { Session, User } from "@/lib/types/user";
+import { getCurrentUser } from "@/lib/auth/current-user";
+import type { Session } from "@/lib/types/user";
 import { mockAgencies } from "@/mocks/agencies";
 import { mockTalents } from "@/mocks/talents";
-import { mockCurrentUserId, mockUsers } from "@/mocks/users";
-
-import { simulateLatency } from "./_latency";
 
 /**
- * Mock del usuario actualmente autenticado.
- * Configurable cambiando `mockCurrentUserId` en `src/mocks/users.ts`.
- * Devuelve `null` si no hay user configurado o el id no matchea.
- * Spread shallow defensivo: mutar el objeto retornado no toca el mock.
- * En Fase 3 esto se reemplaza por la sesión real (Clerk/Supabase).
- */
-export async function getCurrentUser(): Promise<User | null> {
-  await simulateLatency();
-  if (!mockCurrentUserId) return null;
-  const found = mockUsers.find((u) => u.id === mockCurrentUserId);
-  return found ? { ...found } : null;
-}
-
-/**
- * Sesión actual mock.
- * `profileId` apunta a `Talent.id` o `Agency.id` según `user.role`; `null`
- * si el user es admin o si no hay perfil asociado todavía. `expiresAt` es
- * 1 hora hacia el futuro — placeholder hasta Fase 3.
+ * Sesión actual derivada del `getCurrentUser` canónico (`@/lib/auth/current-user`).
+ * `profileId` apunta a `Talent.id` o `Agency.id` según rol del user.
+ * `expiresAt` es placeholder (1h adelante) — la cookie real vive 7 días.
  */
 export async function getCurrentSession(): Promise<Session | null> {
   const user = await getCurrentUser();
